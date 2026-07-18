@@ -1,26 +1,130 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+/*
+  SAFE Africa design tokens.
+  Palette drawn from the brand logo: deep continental green, leaf green,
+  harvest orange, amber gold, and a data-blue used sparingly for evidence
+  accents (charts, links in running text).
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f4;
+  --foreground: #1c231d;
+  --card: #ffffff;
+  --card-foreground: #1c231d;
+  --primary: #1a5632;
+  --primary-foreground: #f6faf3;
+  --secondary: #e9efe3;
+  --secondary-foreground: #1a5632;
+  --muted: #f0f1e8;
+  --muted-foreground: #5c6357;
+  --accent: #eef1e7;
+  --accent-foreground: #1c231d;
+  --destructive: #b42318;
+  --border: #dfe2d4;
+  --input: #d4d8c8;
+  --ring: #4d9a3f;
+  --sidebar: #16301d;
+  --sidebar-foreground: #dfe8d8;
+  --sidebar-accent: #234a2e;
+
+  --brand-leaf: #4d9a3f;
+  --brand-orange: #e8771d;
+  --brand-gold: #d9a41b;
+  --brand-blue: #2a6bb5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #11150f;
+    --foreground: #e7e9dd;
+    --card: #181d15;
+    --card-foreground: #e7e9dd;
+    --primary: #6cbf58;
+    --primary-foreground: #0d1a10;
+    --secondary: #22301f;
+    --secondary-foreground: #cfe3c4;
+    --muted: #1d2419;
+    --muted-foreground: #9aa392;
+    --accent: #222a1d;
+    --accent-foreground: #e7e9dd;
+    --destructive: #f97066;
+    --border: #2b3326;
+    --input: #354030;
+    --ring: #6cbf58;
+    --sidebar: #0d130c;
+    --sidebar-foreground: #cfd8c6;
+    --sidebar-accent: #1f2b1a;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-brand-leaf: var(--brand-leaf);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-blue: var(--brand-blue);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-public-sans), system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-public-sans), sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-public-sans), system-ui, sans-serif;
+}
+
+/* Display typography for public-site headings. */
+.font-display {
+  font-family: var(--font-bricolage), var(--font-public-sans), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/*
+  Signature device: the "evidence bars" — four bars in the brand palette,
+  echoing the bar chart in the SAFE Africa logo. Used as a section marker.
+*/
+.evidence-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+}
+.evidence-bars span {
+  width: 5px;
+  border-radius: 1px;
+}
+.evidence-bars span:nth-child(1) { height: 45%; background: var(--brand-gold); }
+.evidence-bars span:nth-child(2) { height: 70%; background: var(--brand-orange); }
+.evidence-bars span:nth-child(3) { height: 100%; background: var(--brand-leaf); }
+.evidence-bars span:nth-child(4) { height: 55%; background: var(--brand-blue); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise-in {
+    animation: rise-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
 }

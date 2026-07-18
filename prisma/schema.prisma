@@ -1,0 +1,238 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ResourceType {
+  PUBLICATION
+  REPORT
+  POLICY_BRIEF
+  TOOLKIT
+  RESEARCH
+}
+
+enum VacancyType {
+  JOB
+  INTERNSHIP
+}
+
+enum VacancyStatus {
+  OPEN
+  CLOSED
+}
+
+enum ApplicationStatus {
+  NEW
+  REVIEWED
+  SHORTLISTED
+  REJECTED
+}
+
+enum PostType {
+  NEWS
+  EVENT
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(EDITOR)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ThematicArea {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  tagline     String
+  description String
+  impact      String
+  icon        String?
+  coverImage  String?
+  order       Int       @default(0)
+  projects    Project[] @relation("ProjectThematicAreas")
+  resources   Resource[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  icon        String?
+  image       String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Project {
+  id            String              @id @default(cuid())
+  slug          String              @unique
+  title         String
+  client        String
+  location      String
+  periodStart   DateTime
+  periodEnd     DateTime?
+  overview      String
+  role          String
+  scaleResults  String
+  status        ProjectStatus       @default(DRAFT)
+  featured      Boolean             @default(false)
+  coverImage    String?
+  thematicAreas ThematicArea[]      @relation("ProjectThematicAreas")
+  images        ProjectImage[]
+  attachments   ProjectAttachment[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  url       String
+  publicId  String?
+  caption   String?
+  order     Int     @default(0)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+model ProjectAttachment {
+  id        String  @id @default(cuid())
+  url       String
+  publicId  String?
+  name      String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+}
+
+model Resource {
+  id             String        @id @default(cuid())
+  title          String
+  type           ResourceType
+  description    String?
+  fileUrl        String
+  filePublicId   String?
+  coverImage     String?
+  thematicArea   ThematicArea? @relation(fields: [thematicAreaId], references: [id], onDelete: SetNull)
+  thematicAreaId String?
+  publishedAt    DateTime      @default(now())
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Vacancy {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  type         VacancyType   @default(JOB)
+  location     String
+  deadline     DateTime?
+  description  String
+  status       VacancyStatus @default(OPEN)
+  applications Application[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Application {
+  id          String            @id @default(cuid())
+  vacancy     Vacancy           @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  vacancyId   String
+  name        String
+  email       String
+  phone       String
+  coverLetter String
+  cvUrl       String?
+  status      ApplicationStatus @default(NEW)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model Post {
+  id            String    @id @default(cuid())
+  type          PostType  @default(NEWS)
+  slug          String    @unique
+  title         String
+  excerpt       String?
+  body          String
+  coverImage    String?
+  eventDate     DateTime?
+  eventLocation String?
+  published     Boolean   @default(true)
+  publishedAt   DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  url       String
+  publicId  String?
+  caption   String?
+  category  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  title     String
+  bio       String?
+  photo     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PageSection {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  content   Json
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  id           Int      @id @default(1)
+  address      String
+  poBox        String?
+  phone        String
+  email        String
+  socialLinks  Json
+  mapEmbedUrl  String?
+  impactStats  Json
+  updatedAt    DateTime @updatedAt
+}
