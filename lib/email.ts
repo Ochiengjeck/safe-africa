@@ -1,6 +1,9 @@
 import { Resend } from "resend";
 
-const FROM = "SAFE Africa Website <onboarding@resend.dev>";
+// Until a domain is verified at resend.com/domains, Resend only accepts the
+// onboarding@resend.dev sender and only delivers to the account owner's email.
+// After verifying safeafrika.com, set EMAIL_FROM (e.g. "SAFE Africa <website@safeafrika.com>").
+const FROM = process.env.EMAIL_FROM || "SAFE Africa Website <onboarding@resend.dev>";
 
 /**
  * Sends a notification email via Resend. When RESEND_API_KEY is unset the
