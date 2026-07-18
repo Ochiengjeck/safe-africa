@@ -8,8 +8,13 @@ import { ArrowRight } from "lucide-react";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const areas = await prisma.thematicArea.findMany({ select: { slug: true } });
-  return areas.map((area) => ({ slug: area.slug }));
+  try {
+    const areas = await prisma.thematicArea.findMany({ select: { slug: true } });
+    return areas.map((area) => ({ slug: area.slug }));
+  } catch {
+    // DB unreachable at build time — generate pages on demand instead.
+    return [];
+  }
 }
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {

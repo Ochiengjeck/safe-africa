@@ -10,8 +10,13 @@ import { ArrowLeft } from "lucide-react";
 export const revalidate = 600;
 
 export async function generateStaticParams() {
-  const vacancies = await prisma.vacancy.findMany({ where: { status: "OPEN" }, select: { slug: true } });
-  return vacancies.map((vacancy) => ({ slug: vacancy.slug }));
+  try {
+    const vacancies = await prisma.vacancy.findMany({ where: { status: "OPEN" }, select: { slug: true } });
+    return vacancies.map((vacancy) => ({ slug: vacancy.slug }));
+  } catch {
+    // DB unreachable at build time — generate pages on demand instead.
+    return [];
+  }
 }
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {

@@ -9,11 +9,16 @@ import { FileDown, ArrowLeft } from "lucide-react";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const projects = await prisma.project.findMany({
-    where: { status: "PUBLISHED" },
-    select: { slug: true },
-  });
-  return projects.map((project) => ({ slug: project.slug }));
+  try {
+    const projects = await prisma.project.findMany({
+      where: { status: "PUBLISHED" },
+      select: { slug: true },
+    });
+    return projects.map((project) => ({ slug: project.slug }));
+  } catch {
+    // DB unreachable at build time — generate pages on demand instead.
+    return [];
+  }
 }
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }) {
