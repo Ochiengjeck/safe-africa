@@ -1,6 +1,10 @@
 import type { ActionState } from "@/lib/action-utils";
 
-/** Label + control wrapper with the field's server-side validation errors. */
+/**
+ * Label + control wrapper with the field's server-side validation errors.
+ * Errors are announced to assistive tech: the child control should carry
+ * id={name}; the error list is linked via aria-describedby-compatible id.
+ */
 export function Field({
   label,
   name,
@@ -19,11 +23,15 @@ export function Field({
         {label}
       </label>
       {children}
-      {errors?.map((error) => (
-        <p key={error} className="text-xs text-destructive">
-          {error}
-        </p>
-      ))}
+      {errors && (
+        <div id={`${name}-error`} role="alert">
+          {errors.map((error) => (
+            <p key={error} className="text-xs text-destructive">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -31,7 +39,7 @@ export function Field({
 export function FormError({ state }: { state: ActionState }) {
   if (!state?.error) return null;
   return (
-    <p className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+    <p role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
       {state.error}
     </p>
   );
@@ -40,6 +48,8 @@ export function FormError({ state }: { state: ActionState }) {
 export function FormSuccess({ state, message = "Saved." }: { state: ActionState; message?: string }) {
   if (!state?.ok) return null;
   return (
-    <p className="rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">{message}</p>
+    <p role="status" className="rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">
+      {message}
+    </p>
   );
 }

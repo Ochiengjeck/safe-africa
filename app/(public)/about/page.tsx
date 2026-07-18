@@ -1,8 +1,14 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { getSection } from "@/lib/content";
+import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
+import { Reveal } from "@/components/site/reveal";
+import { CmsIcon } from "@/components/site/icon";
 import { MapPin, Compass } from "lucide-react";
+
+const VALUE_ICONS = ["shield", "heart-handshake", "flask-conical", "leaf", "users"];
+const VALUE_COLORS = ["text-primary", "text-brand-orange-deep", "text-brand-blue", "text-brand-leaf", "text-brand-gold"];
 
 export const revalidate = 3600;
 export const metadata = {
@@ -28,17 +34,28 @@ export default async function AboutPage() {
   ]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <SectionHeading
+    <main>
+      <PageHero
         eyebrow="About us"
         title="Evidence with roots in Africa"
         intro="Smart Agriculture and Food Economics Africa Ltd (SAFE Africa Ltd)"
       />
-
-      <div className="prose prose-neutral dark:prose-invert mt-8 max-w-3xl">
-        {overview.paragraphs.map((paragraph, i) => (
-          <p key={i}>{paragraph}</p>
-        ))}
+      <div className="mx-auto max-w-6xl px-4 py-16">
+      <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+        <div className="prose prose-neutral dark:prose-invert max-w-3xl">
+          {overview.paragraphs.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+        <Reveal className="relative hidden aspect-[3/4] overflow-hidden rounded-2xl shadow-lg lg:block">
+          <Image
+            src="/images/about.jpg"
+            alt="Cultivated crop rows stretching toward green hills"
+            fill
+            sizes="35vw"
+            className="object-cover"
+          />
+        </Reveal>
       </div>
 
       {/* Mission & vision */}
@@ -58,11 +75,14 @@ export default async function AboutPage() {
         <section className="mt-20">
           <SectionHeading eyebrow="Values & principles" title="What guides our work" />
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {values.values.map((value) => (
-              <div key={value.name} className="rounded-xl border-t-4 border-brand-leaf bg-card p-5 shadow-sm">
-                <h3 className="font-display font-semibold">{value.name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </div>
+            {values.values.map((value, i) => (
+              <Reveal key={value.name} delay={i * 60}>
+                <div className="h-full rounded-xl border bg-card p-5 shadow-sm">
+                  <CmsIcon name={VALUE_ICONS[i % VALUE_ICONS.length]} className={`h-6 w-6 ${VALUE_COLORS[i % VALUE_COLORS.length]}`} />
+                  <h3 className="font-display mt-3 font-semibold">{value.name}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
@@ -108,13 +128,14 @@ export default async function AboutPage() {
                   </div>
                 )}
                 <h3 className="font-display mt-4 font-semibold">{member.name}</h3>
-                <p className="text-sm text-brand-orange">{member.title}</p>
+                <p className="text-sm font-medium text-brand-orange-deep">{member.title}</p>
                 {member.bio && <p className="mt-2 text-sm text-muted-foreground">{member.bio}</p>}
               </div>
             ))}
           </div>
         </section>
       )}
+      </div>
     </main>
   );
 }

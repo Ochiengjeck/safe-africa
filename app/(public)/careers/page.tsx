@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { SectionHeading } from "@/components/site/section-heading";
+import { PageHero } from "@/components/site/page-hero";
+import { Reveal } from "@/components/site/reveal";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/format";
 import { ArrowRight } from "lucide-react";
@@ -19,25 +20,25 @@ export default async function CareersPage() {
   });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <SectionHeading
+    <main>
+      <PageHero
         eyebrow="Careers"
         title="Join our team"
         intro="Join SAFE Africa's multidisciplinary team of professionals in agriculture, environment, social protection, and socio-economic research. We welcome individuals committed to evidence generation, innovation, and inclusive development across Africa."
       />
-
+      <div className="mx-auto max-w-6xl px-4 py-16">
       {vacancies.length === 0 ? (
-        <div className="mt-12 rounded-xl border border-dashed p-12 text-center">
+        <div className="rounded-xl border border-dashed p-12 text-center">
           <p className="font-display text-lg font-semibold">There are currently no open positions.</p>
           <p className="mt-2 text-muted-foreground">Please check back for future opportunities.</p>
         </div>
       ) : (
-        <div className="mt-10 space-y-5">
-          {vacancies.map((vacancy) => (
+        <div className="space-y-5">
+          {vacancies.map((vacancy, i) => (
+            <Reveal key={vacancy.id} delay={i * 60}>
             <Link
-              key={vacancy.id}
               href={`/careers/${vacancy.slug}`}
-              className="group flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+              className="group flex flex-wrap items-center justify-between gap-4 rounded-xl border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
             >
               <div>
                 <div className="flex items-center gap-2">
@@ -53,9 +54,11 @@ export default async function CareersPage() {
                 View & apply <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
+            </Reveal>
           ))}
         </div>
       )}
+      </div>
     </main>
   );
 }

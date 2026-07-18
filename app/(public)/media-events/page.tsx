@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { RichTextContent } from "@/components/rich-text/content";
@@ -19,19 +20,19 @@ export default async function MediaEventsPage() {
   ]);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <SectionHeading
+    <main>
+      <PageHero
         eyebrow="Media & events"
         title="News, events, and highlights"
         intro="Updates from conferences, workshops, project launches, field activities, and partnerships showcasing SAFE Africa's contribution to evidence-based development."
       />
-
+      <div className="mx-auto max-w-6xl px-4 py-16">
       {posts.length === 0 ? (
-        <p className="mt-12 rounded-xl border border-dashed p-12 text-center text-muted-foreground">
+        <p className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">
           News and event updates will appear here soon.
         </p>
       ) : (
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           {posts.map((post) => (
             <article key={post.id} className="overflow-hidden rounded-xl border bg-card shadow-sm">
               {post.coverImage && (
@@ -87,6 +88,7 @@ export default async function MediaEventsPage() {
           </div>
         </section>
       )}
+      </div>
     </main>
   );
 }

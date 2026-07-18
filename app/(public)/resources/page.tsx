@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { SectionHeading } from "@/components/site/section-heading";
+import { PageHero } from "@/components/site/page-hero";
+import { Reveal } from "@/components/site/reveal";
 import { Badge } from "@/components/ui/badge";
 import { FileDown } from "lucide-react";
 import { formatDate } from "@/lib/format";
@@ -26,18 +27,19 @@ export default async function ResourcesPage() {
   });
 
   return (
-    <main className="mx-auto max-w-6xl px-4 py-16">
-      <SectionHeading
+    <main>
+      <PageHero
         eyebrow="Knowledge"
         title="Resources"
         intro="Publications, technical reports, policy briefs, and practical toolkits supporting evidence-informed decision-making, digital agriculture, climate-smart agriculture, and capacity building."
       />
+      <div className="mx-auto max-w-6xl px-4 py-16">
       {resources.length === 0 ? (
-        <p className="mt-12 rounded-xl border border-dashed p-12 text-center text-muted-foreground">
+        <p className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">
           Publications and reports will appear here as they are released. Check back soon.
         </p>
       ) : (
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {resources.map((resource) => (
             <a
               key={resource.id}
@@ -68,6 +70,7 @@ export default async function ResourcesPage() {
           ))}
         </div>
       )}
+      </div>
     </main>
   );
 }

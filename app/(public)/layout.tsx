@@ -28,19 +28,24 @@ export default async function PublicLayout({ children }: { children: React.React
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <a href="#content" className="skip-link">
+        Skip to content
+      </a>
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
           <Link href="/" className="flex items-center gap-2.5">
             <Image src="/safe-africa-logo.png" alt="" width={38} height={38} className="rounded-md" />
             <span className="font-display text-lg font-bold leading-tight">
-              SAFE <span className="text-brand-orange">Africa</span>
+              SAFE <span className="text-brand-orange-deep">Africa</span>
             </span>
           </Link>
           <SiteNav />
         </div>
       </header>
 
-      <div className="flex-1">{children}</div>
+      <div id="content" className="flex-1">
+        {children}
+      </div>
 
       <footer className="bg-sidebar text-sidebar-foreground">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_1fr_1fr]">

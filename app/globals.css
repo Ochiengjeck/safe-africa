@@ -30,6 +30,9 @@
 
   --brand-leaf: #4d9a3f;
   --brand-orange: #e8771d;
+  /* Contrast-safe orange: ≥4.5:1 as text on --background AND under white text
+     as a button fill. The vivid --brand-orange is decorative-only. */
+  --brand-orange-deep: #c2410c;
   --brand-gold: #d9a41b;
   --brand-blue: #2a6bb5;
 }
@@ -55,6 +58,8 @@
     --sidebar: #0d130c;
     --sidebar-foreground: #cfd8c6;
     --sidebar-accent: #1f2b1a;
+    /* Vivid orange has ample contrast against dark backgrounds. */
+    --brand-orange-deep: #e8771d;
   }
 }
 
@@ -80,6 +85,7 @@
   --color-sidebar-accent: var(--sidebar-accent);
   --color-brand-leaf: var(--brand-leaf);
   --color-brand-orange: var(--brand-orange);
+  --color-brand-orange-deep: var(--brand-orange-deep);
   --color-brand-gold: var(--brand-gold);
   --color-brand-blue: var(--brand-blue);
 
@@ -119,6 +125,31 @@ body {
 .evidence-bars span:nth-child(3) { height: 100%; background: var(--brand-leaf); }
 .evidence-bars span:nth-child(4) { height: 55%; background: var(--brand-blue); }
 
+/* Visible keyboard focus everywhere, in the brand ring color. */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Skip-to-content link: visually hidden until focused. */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 100;
+  transform: translateY(-300%);
+  transition: transform 0.15s ease;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .rise-in {
     animation: rise-in 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
@@ -126,5 +157,21 @@ body {
   @keyframes rise-in {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: none; }
+  }
+
+  /* Scroll reveal: .reveal is applied by the <Reveal> client component only
+     after hydration, so content is always visible without JS. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mobile-menu-enter {
+    animation: rise-in 0.2s ease-out both;
   }
 }
