@@ -16,7 +16,7 @@ export default async function AdminCareersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Careers</h1>
+        <h1 className="font-display text-2xl font-bold">Careers</h1>
         <div className="flex gap-2">
           <Button asChild variant="outline">
             <Link href="/admin/careers/applications">Applications inbox</Link>

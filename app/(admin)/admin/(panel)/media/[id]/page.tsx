@@ -12,7 +12,7 @@ export default async function EditPostPage(props: { params: Promise<{ id: string
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Edit post</h1>
+        <h1 className="font-display text-2xl font-bold">Edit post</h1>
         <RecordMeta createdAt={post.createdAt} updatedAt={post.updatedAt} />
       </div>
       <PostForm post={post} />

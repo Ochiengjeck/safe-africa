@@ -10,7 +10,7 @@ export default async function AdminGalleryPage() {
   });
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Photo gallery</h1>
+      <h1 className="font-display text-2xl font-bold">Photo gallery</h1>
       <GalleryManager images={images} />
     </div>
   );

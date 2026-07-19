@@ -12,7 +12,7 @@ export default async function EditVacancyPage(props: { params: Promise<{ id: str
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Edit vacancy</h1>
+        <h1 className="font-display text-2xl font-bold">Edit vacancy</h1>
         <RecordMeta createdAt={vacancy.createdAt} updatedAt={vacancy.updatedAt} />
       </div>
       <VacancyForm vacancy={vacancy} />

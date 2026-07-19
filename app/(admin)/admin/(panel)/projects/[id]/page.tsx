@@ -20,7 +20,7 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold">Edit project</h1>
+        <h1 className="font-display text-2xl font-bold">Edit project</h1>
         <RecordMeta createdAt={project.createdAt} updatedAt={project.updatedAt} />
       </div>
       <ProjectForm project={project} thematicAreas={thematicAreas} />

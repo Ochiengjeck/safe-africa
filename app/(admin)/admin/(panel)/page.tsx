@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";
+import { FolderKanban, FileText, Megaphone, Mail, Inbox } from "lucide-react";
 
 export const metadata = { title: "Dashboard — SAFE Africa CMS" };
 
@@ -38,11 +39,11 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { label: "Projects", value: projects, href: "/admin/projects" },
-    { label: "Resources", value: resources, href: "/admin/resources" },
-    { label: "Open vacancies", value: vacancies, href: "/admin/careers" },
-    { label: "Unread messages", value: unreadMessages, href: "/admin/messages" },
-    { label: "New applications", value: newApplications, href: "/admin/careers/applications?status=new" },
+    { label: "Projects", value: projects, href: "/admin/projects", icon: FolderKanban, color: "text-brand-leaf bg-brand-leaf/10" },
+    { label: "Resources", value: resources, href: "/admin/resources", icon: FileText, color: "text-brand-blue bg-brand-blue/10" },
+    { label: "Open vacancies", value: vacancies, href: "/admin/careers", icon: Megaphone, color: "text-brand-gold bg-brand-gold/10" },
+    { label: "Unread messages", value: unreadMessages, href: "/admin/messages", icon: Mail, color: "text-brand-orange-deep bg-brand-orange-deep/10" },
+    { label: "New applications", value: newApplications, href: "/admin/careers/applications?status=new", icon: Inbox, color: "text-primary bg-primary/10" },
   ];
 
   const recentEdits = [
@@ -56,7 +57,7 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <h1 className="font-display text-2xl font-bold">Dashboard</h1>
         <div className="flex gap-2">
           <Button asChild size="sm">
             <Link href="/admin/projects/new">New project</Link>
@@ -73,12 +74,13 @@ export default async function AdminDashboard() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
           <Link key={stat.label} href={stat.href}>
-            <Card className="transition-colors hover:bg-accent/50">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="font-mono text-3xl font-semibold">{stat.value}</p>
+            <Card className="h-full transition-all hover:-translate-y-0.5 hover:shadow-md">
+              <CardContent className="pt-6">
+                <span className={`inline-flex h-9 w-9 items-center justify-center rounded-lg ${stat.color}`}>
+                  <stat.icon className="h-4.5 w-4.5" aria-hidden="true" />
+                </span>
+                <p className="mt-3 font-mono text-3xl font-semibold">{stat.value}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
               </CardContent>
             </Card>
           </Link>

@@ -38,7 +38,7 @@ export default async function ApplicationsInboxPage(props: {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Applications inbox</h1>
+      <h1 className="font-display text-2xl font-bold">Applications inbox</h1>
 
       <nav aria-label="Filter applications by status" className="flex flex-wrap gap-2">
         {TABS.map((tab) => (

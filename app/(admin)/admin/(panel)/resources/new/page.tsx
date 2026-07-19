@@ -10,7 +10,7 @@ export default async function NewResourcePage() {
   });
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">New resource</h1>
+      <h1 className="font-display text-2xl font-bold">New resource</h1>
       <ResourceForm thematicAreas={thematicAreas} />
     </div>
   );

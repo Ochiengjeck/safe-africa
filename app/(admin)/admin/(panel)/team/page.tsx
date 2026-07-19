@@ -7,7 +7,7 @@ export default async function AdminTeamPage() {
   const members = await prisma.teamMember.findMany({ where: { deletedAt: null }, orderBy: { order: "asc" } });
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Team members</h1>
+      <h1 className="font-display text-2xl font-bold">Team members</h1>
       <TeamManager members={members} />
     </div>
   );

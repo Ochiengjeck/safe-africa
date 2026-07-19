@@ -16,7 +16,7 @@ export default async function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Website settings</h1>
+      <h1 className="font-display text-2xl font-bold">Website settings</h1>
       <SettingsForm
         defaults={{
           address: settings?.address ?? "",

@@ -11,7 +11,7 @@ export default async function AdminMessagesPage() {
   });
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Contact messages</h1>
+      <h1 className="font-display text-2xl font-bold">Contact messages</h1>
       <Suspense>
         <MessagesTable messages={messages} />
       </Suspense>

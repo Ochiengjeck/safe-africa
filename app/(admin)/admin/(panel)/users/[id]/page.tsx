@@ -20,7 +20,7 @@ export default async function EditUserPage(props: { params: Promise<{ id: string
   if (!user) notFound();
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Edit user</h1>
+      <h1 className="font-display text-2xl font-bold">Edit user</h1>
       <UserForm user={user} />
     </div>
   );

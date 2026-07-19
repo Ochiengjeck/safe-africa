@@ -20,7 +20,7 @@ export default async function AdminPagesPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Page content</h1>
+        <h1 className="font-display text-2xl font-bold">Page content</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Structured content blocks for the homepage and about page, edited as JSON. Changes publish
           immediately.

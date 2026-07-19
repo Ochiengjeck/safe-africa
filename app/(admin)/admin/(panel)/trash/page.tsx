@@ -32,7 +32,7 @@ export default async function TrashPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Trash</h1>
+        <h1 className="font-display text-2xl font-bold">Trash</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Deleted items live here until restored{session.user.role === "SUPER_ADMIN" ? " or permanently removed" : ""}.
           They are hidden from the public website.

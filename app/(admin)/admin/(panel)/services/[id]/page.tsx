@@ -10,7 +10,7 @@ export default async function EditServicePage(props: { params: Promise<{ id: str
   if (!service) notFound();
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Edit service</h1>
+      <h1 className="font-display text-2xl font-bold">Edit service</h1>
       <ServiceForm service={service} />
     </div>
   );

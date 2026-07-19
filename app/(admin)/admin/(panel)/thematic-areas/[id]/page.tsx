@@ -12,7 +12,7 @@ export default async function EditThematicAreaPage(props: { params: Promise<{ id
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Edit thematic area</h1>
+        <h1 className="font-display text-2xl font-bold">Edit thematic area</h1>
         <RecordMeta createdAt={area.createdAt} updatedAt={area.updatedAt} />
       </div>
       <AreaForm area={area} />

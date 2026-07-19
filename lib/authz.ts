@@ -1,12 +1,9 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { ROLE_RANK, hasRole } from "@/lib/roles";
 import type { Role } from "@/lib/generated/prisma/client";
 
-const ROLE_RANK: Record<Role, number> = {
-  EDITOR: 1,
-  ADMIN: 2,
-  SUPER_ADMIN: 3,
-};
+export { hasRole };
 
 /** Returns the session or redirects to the admin login. Use in admin layouts/pages. */
 export async function requireSession() {
@@ -25,8 +22,4 @@ export async function requireRole(minimum: Role = "EDITOR") {
   if (!session?.user) throw new Error("Unauthorized");
   if (ROLE_RANK[session.user.role] < ROLE_RANK[minimum]) throw new Error("Forbidden");
   return session;
-}
-
-export function hasRole(role: Role, minimum: Role) {
-  return ROLE_RANK[role] >= ROLE_RANK[minimum];
 }
