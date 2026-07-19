@@ -29,10 +29,10 @@ export default async function ThematicAreaPage(props: { params: Promise<{ slug: 
     where: { slug },
     include: {
       projects: {
-        where: { status: "PUBLISHED" },
+        where: { status: "PUBLISHED", deletedAt: null },
         orderBy: { periodStart: "desc" },
       },
-      resources: { orderBy: { publishedAt: "desc" }, take: 6 },
+      resources: { where: { deletedAt: null }, orderBy: { publishedAt: "desc" }, take: 6 },
     },
   });
   if (!area) notFound();

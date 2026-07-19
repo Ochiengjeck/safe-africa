@@ -26,7 +26,7 @@ export async function saveService(_prev: ActionState, formData: FormData): Promi
     await prisma.service.create({ data: { ...data, slug } });
   }
   revalidatePublic();
-  redirect("/admin/services");
+  redirect("/admin/services?saved=Service+saved");
 }
 
 export async function deleteService(id: string) {

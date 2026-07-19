@@ -1,13 +1,16 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/authz";
+import { AccessDenied } from "@/components/admin/access-denied";
 import { UserForm } from "../user-form";
 
 export const metadata = { title: "Edit User — SAFE Africa CMS" };
 
 export default async function EditUserPage(props: { params: Promise<{ id: string }> }) {
   const session = await requireSession();
-  if (session.user.role !== "SUPER_ADMIN") redirect("/admin");
+  if (session.user.role !== "SUPER_ADMIN") {
+    return <AccessDenied currentRole={session.user.role} requiredRole="SUPER_ADMIN" feature="User management" />;
+  }
 
   const { id } = await props.params;
   const user = await prisma.user.findUnique({

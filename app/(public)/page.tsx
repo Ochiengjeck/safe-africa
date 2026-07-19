@@ -44,7 +44,7 @@ export default async function HomePage() {
     }),
     prisma.thematicArea.findMany({ orderBy: { order: "asc" } }),
     prisma.project.findMany({
-      where: { status: "PUBLISHED", featured: true },
+      where: { status: "PUBLISHED", featured: true, deletedAt: null },
       orderBy: { periodStart: "desc" },
       take: 3,
     }),

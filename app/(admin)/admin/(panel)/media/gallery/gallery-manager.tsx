@@ -1,21 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { useActionState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState } from "react";
 import { saveGalleryImage, deleteGalleryImage } from "@/lib/actions/posts";
+import { restoreItem } from "@/lib/actions/trash";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { DeleteButton } from "@/components/admin/delete-button";
 import { UploadField } from "@/components/upload-field";
 import type { GalleryImage } from "@/lib/generated/prisma/client";
 
 export function GalleryManager({ images }: { images: GalleryImage[] }) {
   const [state, action] = useActionState(saveGalleryImage, null);
-  const [pending, startTransition] = useTransition();
-  const router = useRouter();
 
   return (
     <div className="space-y-8">
@@ -45,19 +43,12 @@ export function GalleryManager({ images }: { images: GalleryImage[] }) {
             </div>
             <figcaption className="flex items-center justify-between gap-2 text-xs">
               <span className="truncate">{image.caption ?? "—"}</span>
-              <Button
-                variant="destructive"
-                size="sm"
-                disabled={pending}
-                onClick={() =>
-                  startTransition(async () => {
-                    await deleteGalleryImage(image.id);
-                    router.refresh();
-                  })
-                }
-              >
-                Remove
-              </Button>
+              <DeleteButton
+                action={deleteGalleryImage.bind(null, image.id)}
+                restore={restoreItem.bind(null, "galleryImage", image.id)}
+                resourceLabel={`gallery image “${image.caption ?? "untitled"}”`}
+                label="Remove"
+              />
             </figcaption>
           </figure>
         ))}

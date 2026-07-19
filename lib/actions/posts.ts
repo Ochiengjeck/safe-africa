@@ -26,12 +26,12 @@ export async function savePost(_prev: ActionState, formData: FormData): Promise<
     await prisma.post.create({ data: { ...data, slug } });
   }
   revalidatePublic();
-  redirect("/admin/media");
+  redirect("/admin/media?saved=Post+saved");
 }
 
 export async function deletePost(id: string) {
   await requireRole("ADMIN");
-  await prisma.post.delete({ where: { id } });
+  await prisma.post.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }
 
@@ -52,6 +52,6 @@ export async function saveGalleryImage(_prev: ActionState, formData: FormData): 
 
 export async function deleteGalleryImage(id: string) {
   await requireRole("EDITOR");
-  await prisma.galleryImage.delete({ where: { id } });
+  await prisma.galleryImage.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }

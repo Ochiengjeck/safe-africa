@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveVacancy } from "@/lib/actions/careers";
 import { Input } from "@/components/ui/input";
@@ -55,7 +56,12 @@ export function VacancyForm({ vacancy }: { vacancy?: Vacancy }) {
           <option value="CLOSED">Closed</option>
         </select>
       </Field>
-      <SubmitButton>{vacancy ? "Save changes" : "Create vacancy"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{vacancy ? "Save changes" : "Create vacancy"}</SubmitButton>
+        <Link href="/admin/careers" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

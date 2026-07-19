@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveResource } from "@/lib/actions/resources";
 import { Input } from "@/components/ui/input";
@@ -72,7 +73,12 @@ export function ResourceForm({ resource, thematicAreas }: ResourceFormProps) {
         accept="image/*"
         defaultUrl={resource?.coverImage ?? undefined}
       />
-      <SubmitButton>{resource ? "Save changes" : "Create resource"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{resource ? "Save changes" : "Create resource"}</SubmitButton>
+        <Link href="/admin/resources" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

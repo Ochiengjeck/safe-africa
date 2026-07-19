@@ -1,13 +1,15 @@
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/authz";
+import { AccessDenied } from "@/components/admin/access-denied";
 import { SettingsForm } from "./settings-form";
 
 export const metadata = { title: "Settings — SAFE Africa CMS" };
 
 export default async function AdminSettingsPage() {
   const session = await requireSession();
-  if (session.user.role !== "SUPER_ADMIN") redirect("/admin");
+  if (session.user.role !== "SUPER_ADMIN") {
+    return <AccessDenied currentRole={session.user.role} requiredRole="SUPER_ADMIN" feature="Website settings" />;
+  }
 
   const settings = await prisma.siteSetting.findUnique({ where: { id: 1 } });
   const socialLinks = (settings?.socialLinks ?? {}) as Record<string, string>;

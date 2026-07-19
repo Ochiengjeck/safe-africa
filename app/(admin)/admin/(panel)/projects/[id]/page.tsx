@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { RecordMeta } from "@/components/admin/record-meta";
 import { ProjectForm } from "../project-form";
 import { ProjectMedia } from "./project-media";
 
@@ -18,7 +19,10 @@ export default async function EditProjectPage(props: { params: Promise<{ id: str
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-semibold">Edit project</h1>
+      <div>
+        <h1 className="text-2xl font-semibold">Edit project</h1>
+        <RecordMeta createdAt={project.createdAt} updatedAt={project.updatedAt} />
+      </div>
       <ProjectForm project={project} thematicAreas={thematicAreas} />
       <ProjectMedia projectId={project.id} images={project.images} attachments={project.attachments} />
     </div>

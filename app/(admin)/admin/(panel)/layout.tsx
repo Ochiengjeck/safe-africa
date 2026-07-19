@@ -1,9 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+import { SavedToast } from "@/components/admin/saved-toast";
 import { requireSession } from "@/lib/authz";
 import { hasRole } from "@/lib/authz";
 import { logout } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { Role } from "@/lib/generated/prisma/client";
 
 const NAV: { href: string; label: string; minRole: Role }[] = [
@@ -17,6 +21,7 @@ const NAV: { href: string; label: string; minRole: Role }[] = [
   { href: "/admin/team", label: "Team", minRole: "EDITOR" },
   { href: "/admin/pages", label: "Page Content", minRole: "EDITOR" },
   { href: "/admin/messages", label: "Messages", minRole: "ADMIN" },
+  { href: "/admin/trash", label: "Trash", minRole: "EDITOR" },
   { href: "/admin/users", label: "Users", minRole: "SUPER_ADMIN" },
   { href: "/admin/settings", label: "Settings", minRole: "SUPER_ADMIN" },
 ];
@@ -44,9 +49,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           ))}
         </nav>
         <div className="border-t p-3">
-          <p className="truncate px-3 pb-2 text-xs text-muted-foreground">
-            {session.user.name} · {role.replace("_", " ").toLowerCase()}
-          </p>
+          <div className="flex items-center gap-2 px-3 pb-2">
+            <p className="truncate text-xs text-muted-foreground">{session.user.name}</p>
+            <Badge variant="outline" className="shrink-0 border-sidebar-accent text-sidebar-foreground">
+              {role.replace("_", " ").toLowerCase()}
+            </Badge>
+          </div>
           <form action={logout}>
             <Button type="submit" variant="outline" size="sm" className="w-full">
               Sign out
@@ -65,6 +73,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </header>
         <main className="p-4 md:p-8">{children}</main>
       </div>
+      <Toaster position="bottom-right" richColors closeButton />
+      <Suspense>
+        <SavedToast />
+      </Suspense>
     </div>
   );
 }

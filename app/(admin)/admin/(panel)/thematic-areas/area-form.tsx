@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveThematicArea } from "@/lib/actions/thematic-areas";
 import { Input } from "@/components/ui/input";
@@ -42,7 +43,12 @@ export function AreaForm({ area }: { area?: ThematicArea }) {
         accept="image/*"
         defaultUrl={area?.coverImage ?? undefined}
       />
-      <SubmitButton>{area ? "Save changes" : "Create area"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{area ? "Save changes" : "Create area"}</SubmitButton>
+        <Link href="/admin/thematic-areas" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

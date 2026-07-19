@@ -23,6 +23,6 @@ export async function saveTeamMember(_prev: ActionState, formData: FormData): Pr
 
 export async function deleteTeamMember(id: string) {
   await requireRole("ADMIN");
-  await prisma.teamMember.delete({ where: { id } });
+  await prisma.teamMember.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }

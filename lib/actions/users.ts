@@ -28,7 +28,7 @@ export async function saveUser(_prev: ActionState, formData: FormData): Promise<
     if (existing) return { error: "A user with this email already exists." };
     await prisma.user.create({ data: { ...data, email, passwordHash: await hash(password, 12) } });
   }
-  redirect("/admin/users");
+  redirect("/admin/users?saved=User+saved");
 }
 
 export async function deleteUser(id: string) {

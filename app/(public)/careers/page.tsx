@@ -15,7 +15,7 @@ export const metadata = {
 
 export default async function CareersPage() {
   const vacancies = await prisma.vacancy.findMany({
-    where: { status: "OPEN" },
+    where: { status: "OPEN", deletedAt: null },
     orderBy: { createdAt: "desc" },
   });
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveUser } from "@/lib/actions/users";
 import { Input } from "@/components/ui/input";
@@ -45,7 +46,12 @@ export function UserForm({ user }: { user?: Pick<User, "id" | "email" | "name" |
           Account active
         </label>
       </div>
-      <SubmitButton>{user ? "Save changes" : "Create user"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{user ? "Save changes" : "Create user"}</SubmitButton>
+        <Link href="/admin/users" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

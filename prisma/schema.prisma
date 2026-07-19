@@ -107,6 +107,7 @@ model Project {
   attachments   ProjectAttachment[]
   createdAt     DateTime            @default(now())
   updatedAt     DateTime            @updatedAt
+  deletedAt DateTime?
 }
 
 model ProjectImage {
@@ -141,6 +142,7 @@ model Resource {
   publishedAt    DateTime      @default(now())
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+  deletedAt DateTime?
 }
 
 model Vacancy {
@@ -155,6 +157,7 @@ model Vacancy {
   applications Application[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  deletedAt DateTime?
 }
 
 model Application {
@@ -185,6 +188,7 @@ model Post {
   publishedAt   DateTime  @default(now())
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  deletedAt DateTime?
 }
 
 model GalleryImage {
@@ -195,6 +199,7 @@ model GalleryImage {
   category  String?
   order     Int      @default(0)
   createdAt DateTime @default(now())
+  deletedAt DateTime?
 }
 
 model TeamMember {
@@ -206,6 +211,7 @@ model TeamMember {
   order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
 }
 
 model PageSection {
@@ -223,6 +229,7 @@ model ContactMessage {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+  deletedAt DateTime?
 }
 
 model SiteSetting {

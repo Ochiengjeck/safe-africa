@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { RecordMeta } from "@/components/admin/record-meta";
 import { PostForm } from "../post-form";
 
 export const metadata = { title: "Edit Post — SAFE Africa CMS" };
@@ -10,7 +11,10 @@ export default async function EditPostPage(props: { params: Promise<{ id: string
   if (!post) notFound();
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Edit post</h1>
+      <div>
+        <h1 className="text-2xl font-semibold">Edit post</h1>
+        <RecordMeta createdAt={post.createdAt} updatedAt={post.updatedAt} />
+      </div>
       <PostForm post={post} />
     </div>
   );

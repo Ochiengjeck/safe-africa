@@ -35,7 +35,7 @@ export async function submitApplication(_prev: ActionState, formData: FormData):
   }
 
   const vacancy = await prisma.vacancy.findUnique({ where: { id: data.vacancyId } });
-  if (!vacancy || vacancy.status !== "OPEN") {
+  if (!vacancy || vacancy.status !== "OPEN" || vacancy.deletedAt) {
     return { error: "This vacancy is no longer open for applications." };
   }
 

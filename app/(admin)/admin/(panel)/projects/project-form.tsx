@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveProject } from "@/lib/actions/projects";
 import { Input } from "@/components/ui/input";
@@ -101,7 +102,12 @@ export function ProjectForm({ project, thematicAreas }: ProjectFormProps) {
         defaultUrl={project?.coverImage ?? undefined}
       />
 
-      <SubmitButton>{project ? "Save changes" : "Create project"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{project ? "Save changes" : "Create project"}</SubmitButton>
+        <Link href="/admin/projects" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

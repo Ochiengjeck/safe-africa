@@ -30,7 +30,7 @@ export default async function AboutPage() {
     getSection<Values>("about.values", { values: [] }),
     getSection<Footprint>("about.footprint", { headquarters: "", operations: "" }),
     getSection<Approach>("about.approach", { body: "" }),
-    prisma.teamMember.findMany({ orderBy: { order: "asc" } }),
+    prisma.teamMember.findMany({ where: { deletedAt: null }, orderBy: { order: "asc" } }),
   ]);
 
   return (

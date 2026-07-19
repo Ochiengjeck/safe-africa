@@ -13,9 +13,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let vacancies: { slug: string; updatedAt: Date }[] = [];
   try {
     [projects, areas, vacancies] = await Promise.all([
-      prisma.project.findMany({ where: { status: "PUBLISHED" }, select: { slug: true, updatedAt: true } }),
+      prisma.project.findMany({ where: { status: "PUBLISHED", deletedAt: null }, select: { slug: true, updatedAt: true } }),
       prisma.thematicArea.findMany({ select: { slug: true, updatedAt: true } }),
-      prisma.vacancy.findMany({ where: { status: "OPEN" }, select: { slug: true, updatedAt: true } }),
+      prisma.vacancy.findMany({ where: { status: "OPEN", deletedAt: null }, select: { slug: true, updatedAt: true } }),
     ]);
   } catch {
     // DB unreachable — ship the static routes rather than failing the build.

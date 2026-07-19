@@ -19,6 +19,7 @@ export default async function ProjectsPage(props: { searchParams: Promise<{ area
     prisma.project.findMany({
       where: {
         status: "PUBLISHED",
+        deletedAt: null,
         ...(area ? { thematicAreas: { some: { slug: area } } } : {}),
       },
       orderBy: { periodStart: "desc" },
@@ -29,10 +30,10 @@ export default async function ProjectsPage(props: { searchParams: Promise<{ area
       select: {
         slug: true,
         title: true,
-        _count: { select: { projects: { where: { status: "PUBLISHED" } } } },
+        _count: { select: { projects: { where: { status: "PUBLISHED", deletedAt: null } } } },
       },
     }),
-    prisma.project.count({ where: { status: "PUBLISHED" } }),
+    prisma.project.count({ where: { status: "PUBLISHED", deletedAt: null } }),
   ]);
 
   return (

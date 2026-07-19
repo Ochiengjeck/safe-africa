@@ -27,12 +27,12 @@ export async function saveVacancy(_prev: ActionState, formData: FormData): Promi
     await prisma.vacancy.create({ data: { ...data, slug } });
   }
   revalidatePublic();
-  redirect("/admin/careers");
+  redirect("/admin/careers?saved=Vacancy+saved");
 }
 
 export async function deleteVacancy(id: string) {
   await requireRole("ADMIN");
-  await prisma.vacancy.delete({ where: { id } });
+  await prisma.vacancy.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }
 

@@ -20,11 +20,11 @@ export async function saveResource(_prev: ActionState, formData: FormData): Prom
     await prisma.resource.create({ data: payload });
   }
   revalidatePublic();
-  redirect("/admin/resources");
+  redirect("/admin/resources?saved=Resource+saved");
 }
 
 export async function deleteResource(id: string) {
   await requireRole("ADMIN");
-  await prisma.resource.delete({ where: { id } });
+  await prisma.resource.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }

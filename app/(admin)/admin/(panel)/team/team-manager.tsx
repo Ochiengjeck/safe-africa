@@ -1,22 +1,21 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useState } from "react";
 import { saveTeamMember, deleteTeamMember } from "@/lib/actions/team";
+import { restoreItem } from "@/lib/actions/trash";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
+import { DeleteButton } from "@/components/admin/delete-button";
 import { UploadField } from "@/components/upload-field";
 import type { TeamMember } from "@/lib/generated/prisma/client";
 
 export function TeamManager({ members }: { members: TeamMember[] }) {
   const [editing, setEditing] = useState<TeamMember | null>(null);
   const [state, action] = useActionState(saveTeamMember, null);
-  const [pending, startTransition] = useTransition();
-  const router = useRouter();
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
@@ -32,19 +31,11 @@ export function TeamManager({ members }: { members: TeamMember[] }) {
               <Button variant="outline" size="sm" onClick={() => setEditing(member)}>
                 Edit
               </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                disabled={pending}
-                onClick={() =>
-                  startTransition(async () => {
-                    await deleteTeamMember(member.id);
-                    router.refresh();
-                  })
-                }
-              >
-                Delete
-              </Button>
+              <DeleteButton
+                action={deleteTeamMember.bind(null, member.id)}
+                restore={restoreItem.bind(null, "teamMember", member.id)}
+                resourceLabel={`team member ${member.name}`}
+              />
             </div>
           </div>
         ))}

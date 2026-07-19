@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { savePost } from "@/lib/actions/posts";
 import { Input } from "@/components/ui/input";
@@ -67,7 +68,12 @@ export function PostForm({ post }: { post?: Post }) {
         accept="image/*"
         defaultUrl={post?.coverImage ?? undefined}
       />
-      <SubmitButton>{post ? "Save changes" : "Create post"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{post ? "Save changes" : "Create post"}</SubmitButton>
+        <Link href="/admin/media" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }

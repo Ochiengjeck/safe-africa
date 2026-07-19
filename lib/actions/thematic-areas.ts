@@ -26,7 +26,7 @@ export async function saveThematicArea(_prev: ActionState, formData: FormData): 
     await prisma.thematicArea.create({ data: { ...data, slug } });
   }
   revalidatePublic();
-  redirect("/admin/thematic-areas");
+  redirect("/admin/thematic-areas?saved=Thematic+area+saved");
 }
 
 export async function deleteThematicArea(id: string) {

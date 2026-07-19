@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { RecordMeta } from "@/components/admin/record-meta";
 import { VacancyForm } from "../vacancy-form";
 
 export const metadata = { title: "Edit Vacancy — SAFE Africa CMS" };
@@ -10,7 +11,10 @@ export default async function EditVacancyPage(props: { params: Promise<{ id: str
   if (!vacancy) notFound();
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Edit vacancy</h1>
+      <div>
+        <h1 className="text-2xl font-semibold">Edit vacancy</h1>
+        <RecordMeta createdAt={vacancy.createdAt} updatedAt={vacancy.updatedAt} />
+      </div>
       <VacancyForm vacancy={vacancy} />
     </div>
   );

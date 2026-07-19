@@ -2,37 +2,74 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/format";
 
 export const metadata = { title: "Dashboard — SAFE Africa CMS" };
 
 export default async function AdminDashboard() {
-  const [projects, resources, vacancies, unreadMessages, newApplications, latestMessages, latestApplications] =
-    await Promise.all([
-      prisma.project.count(),
-      prisma.resource.count(),
-      prisma.vacancy.count({ where: { status: "OPEN" } }),
-      prisma.contactMessage.count({ where: { read: false } }),
-      prisma.application.count({ where: { status: "NEW" } }),
-      prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
-      prisma.application.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        include: { vacancy: { select: { title: true } } },
-      }),
-    ]);
+  const live = { deletedAt: null } as const;
+  const [
+    projects,
+    resources,
+    vacancies,
+    unreadMessages,
+    newApplications,
+    latestMessages,
+    latestApplications,
+    recentProjects,
+    recentPosts,
+    recentResources,
+  ] = await Promise.all([
+    prisma.project.count({ where: live }),
+    prisma.resource.count({ where: live }),
+    prisma.vacancy.count({ where: { status: "OPEN", ...live } }),
+    prisma.contactMessage.count({ where: { read: false, ...live } }),
+    prisma.application.count({ where: { status: "NEW" } }),
+    prisma.contactMessage.findMany({ where: live, orderBy: { createdAt: "desc" }, take: 5 }),
+    prisma.application.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: { vacancy: { select: { title: true } } },
+    }),
+    prisma.project.findMany({ where: live, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, title: true, updatedAt: true } }),
+    prisma.post.findMany({ where: live, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, title: true, updatedAt: true } }),
+    prisma.resource.findMany({ where: live, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, title: true, updatedAt: true } }),
+  ]);
 
   const stats = [
     { label: "Projects", value: projects, href: "/admin/projects" },
     { label: "Resources", value: resources, href: "/admin/resources" },
     { label: "Open vacancies", value: vacancies, href: "/admin/careers" },
     { label: "Unread messages", value: unreadMessages, href: "/admin/messages" },
-    { label: "New applications", value: newApplications, href: "/admin/careers/applications" },
+    { label: "New applications", value: newApplications, href: "/admin/careers/applications?status=new" },
   ];
+
+  const recentEdits = [
+    ...recentProjects.map((p) => ({ kind: "Project", href: `/admin/projects/${p.id}`, title: p.title, at: p.updatedAt })),
+    ...recentPosts.map((p) => ({ kind: "Post", href: `/admin/media/${p.id}`, title: p.title, at: p.updatedAt })),
+    ...recentResources.map((r) => ({ kind: "Resource", href: `/admin/resources/${r.id}`, title: r.title, at: r.updatedAt })),
+  ]
+    .sort((a, b) => b.at.getTime() - a.at.getTime())
+    .slice(0, 5);
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <div className="flex gap-2">
+          <Button asChild size="sm">
+            <Link href="/admin/projects/new">New project</Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/admin/media/new">New post</Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href="/admin/resources/new">New resource</Link>
+          </Button>
+        </div>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
           <Link key={stat.label} href={stat.href}>
@@ -41,13 +78,31 @@ export default async function AdminDashboard() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-3xl font-semibold">{stat.value}</p>
+                <p className="font-mono text-3xl font-semibold">{stat.value}</p>
               </CardContent>
             </Card>
           </Link>
         ))}
       </div>
-      <div className="grid gap-6 lg:grid-cols-2">
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Recently updated</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {recentEdits.length === 0 && <p className="text-sm text-muted-foreground">No content yet.</p>}
+            {recentEdits.map((edit) => (
+              <Link key={edit.href} href={edit.href} className="flex items-start justify-between gap-3 text-sm hover:underline">
+                <span className="min-w-0">
+                  <Badge variant="secondary" className="mr-1.5">{edit.kind}</Badge>
+                  <span className="font-medium">{edit.title}</span>
+                </span>
+                <span className="shrink-0 font-mono text-xs text-muted-foreground">{formatDate(edit.at)}</span>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Latest messages</CardTitle>
@@ -62,7 +117,7 @@ export default async function AdminDashboard() {
                   </p>
                   <p className="truncate text-muted-foreground">{message.subject ?? message.message}</p>
                 </div>
-                <span className="shrink-0 text-xs text-muted-foreground">{formatDate(message.createdAt)}</span>
+                <span className="shrink-0 font-mono text-xs text-muted-foreground">{formatDate(message.createdAt)}</span>
               </div>
             ))}
           </CardContent>

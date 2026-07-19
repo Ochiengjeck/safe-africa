@@ -29,12 +29,12 @@ export async function saveProject(_prev: ActionState, formData: FormData): Promi
     });
   }
   revalidatePublic();
-  redirect("/admin/projects");
+  redirect("/admin/projects?saved=Project+saved");
 }
 
 export async function deleteProject(id: string) {
   await requireRole("ADMIN");
-  await prisma.project.delete({ where: { id } });
+  await prisma.project.update({ where: { id }, data: { deletedAt: new Date() } });
   revalidatePublic();
 }
 

@@ -11,7 +11,7 @@ export const revalidate = 600;
 
 export async function generateStaticParams() {
   try {
-    const vacancies = await prisma.vacancy.findMany({ where: { status: "OPEN" }, select: { slug: true } });
+    const vacancies = await prisma.vacancy.findMany({ where: { status: "OPEN", deletedAt: null }, select: { slug: true } });
     return vacancies.map((vacancy) => ({ slug: vacancy.slug }));
   } catch {
     // DB unreachable at build time — generate pages on demand instead.
@@ -28,7 +28,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 export default async function VacancyPage(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
   const vacancy = await prisma.vacancy.findUnique({ where: { slug } });
-  if (!vacancy) notFound();
+  if (!vacancy || vacancy.deletedAt) notFound();
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-16">

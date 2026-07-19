@@ -1,20 +1,20 @@
+import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
-import { formatDate } from "@/lib/format";
-import { MessageRow } from "./message-row";
+import { MessagesTable } from "./messages-table";
 
 export const metadata = { title: "Messages — SAFE Africa CMS" };
 
 export default async function AdminMessagesPage() {
-  const messages = await prisma.contactMessage.findMany({ orderBy: { createdAt: "desc" } });
+  const messages = await prisma.contactMessage.findMany({
+    where: { deletedAt: null },
+    orderBy: { createdAt: "desc" },
+  });
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Contact messages</h1>
-      <div className="space-y-3">
-        {messages.length === 0 && <p className="text-sm text-muted-foreground">No messages yet.</p>}
-        {messages.map((message) => (
-          <MessageRow key={message.id} message={message} receivedAt={formatDate(message.createdAt)} />
-        ))}
-      </div>
+      <Suspense>
+        <MessagesTable messages={messages} />
+      </Suspense>
     </div>
   );
 }

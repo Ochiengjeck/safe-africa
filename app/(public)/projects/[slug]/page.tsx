@@ -11,7 +11,7 @@ export const revalidate = 3600;
 export async function generateStaticParams() {
   try {
     const projects = await prisma.project.findMany({
-      where: { status: "PUBLISHED" },
+      where: { status: "PUBLISHED", deletedAt: null },
       select: { slug: true },
     });
     return projects.map((project) => ({ slug: project.slug }));
@@ -37,7 +37,7 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
       attachments: true,
     },
   });
-  if (!project || project.status !== "PUBLISHED") notFound();
+  if (!project || project.status !== "PUBLISHED" || project.deletedAt) notFound();
 
   const facts = [
     { label: "Client", value: project.client },

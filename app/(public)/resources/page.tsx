@@ -22,6 +22,7 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default async function ResourcesPage() {
   const resources = await prisma.resource.findMany({
+    where: { deletedAt: null },
     orderBy: { publishedAt: "desc" },
     include: { thematicArea: { select: { title: true } } },
   });

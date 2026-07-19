@@ -15,8 +15,8 @@ export const metadata = {
 
 export default async function MediaEventsPage() {
   const [posts, gallery] = await Promise.all([
-    prisma.post.findMany({ where: { published: true }, orderBy: { publishedAt: "desc" } }),
-    prisma.galleryImage.findMany({ orderBy: [{ order: "asc" }, { createdAt: "desc" }], take: 12 }),
+    prisma.post.findMany({ where: { published: true, deletedAt: null }, orderBy: { publishedAt: "desc" } }),
+    prisma.galleryImage.findMany({ where: { deletedAt: null }, orderBy: [{ order: "asc" }, { createdAt: "desc" }], take: 12 }),
   ]);
 
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { saveService } from "@/lib/actions/services";
 import { Input } from "@/components/ui/input";
@@ -36,7 +37,12 @@ export function ServiceForm({ service }: { service?: Service }) {
         accept="image/*"
         defaultUrl={service?.image ?? undefined}
       />
-      <SubmitButton>{service ? "Save changes" : "Create service"}</SubmitButton>
+      <div className="flex items-center gap-3">
+        <SubmitButton>{service ? "Save changes" : "Create service"}</SubmitButton>
+        <Link href="/admin/services" className="text-sm font-medium text-muted-foreground hover:underline">
+          Cancel
+        </Link>
+      </div>
     </form>
   );
 }
