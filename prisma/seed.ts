@@ -6,6 +6,7 @@ import { PrismaClient } from "../lib/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
 import { defaultApplicationFields } from "../lib/careers/form-fields";
+import { plainTextToHtml } from "../lib/rich-text";
 
 const RESUME_TEMPLATE_URL =
   "https://docs.google.com/document/d/1jVVfv_g-_DoUfLOKL1ol66UhkIXb42Cp8sBsYCbF4wA/edit";
@@ -402,21 +403,29 @@ async function main() {
   await seedCareers();
 
   for (const area of thematicAreas) {
-    await prisma.thematicArea.upsert({ where: { slug: area.slug }, update: area, create: area });
+    const data = { ...area, description: plainTextToHtml(area.description), impact: plainTextToHtml(area.impact) };
+    await prisma.thematicArea.upsert({ where: { slug: area.slug }, update: data, create: data });
   }
   console.log(`Thematic areas: ${thematicAreas.length}`);
 
   for (const service of services) {
-    await prisma.service.upsert({ where: { slug: service.slug }, update: service, create: service });
+    const data = { ...service, description: plainTextToHtml(service.description) };
+    await prisma.service.upsert({ where: { slug: service.slug }, update: data, create: data });
   }
   console.log(`Services: ${services.length}`);
 
   for (const { areas, ...project } of projects) {
     const connect = { connect: areas.map((slug) => ({ slug })) };
+    const content = {
+      ...project,
+      overview: plainTextToHtml(project.overview),
+      role: plainTextToHtml(project.role),
+      scaleResults: plainTextToHtml(project.scaleResults),
+    };
     await prisma.project.upsert({
       where: { slug: project.slug },
-      update: { ...project, status: "PUBLISHED", featured: true, thematicAreas: { set: [], ...connect } },
-      create: { ...project, status: "PUBLISHED", featured: true, thematicAreas: connect },
+      update: { ...content, status: "PUBLISHED", featured: true, thematicAreas: { set: [], ...connect } },
+      create: { ...content, status: "PUBLISHED", featured: true, thematicAreas: connect },
     });
   }
   console.log(`Projects: ${projects.length}`);

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ApplicationsGroup, type AppRow } from "./applications-group";
+import { PageHeader } from "@/components/admin/page-header";
 import type { ApplicationStatus } from "@/lib/generated/prisma/client";
 
 export const metadata = { title: "Applications — SAFE Africa CMS" };
@@ -52,7 +53,7 @@ export default async function ApplicationsInboxPage(props: { searchParams: Promi
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-2xl font-bold">Applications</h1>
+      <PageHeader eyebrow="Careers" title="Applications" subtitle="Received applications, grouped by opening. Shortlist, schedule interviews, and manage the pipeline." />
 
       <nav aria-label="Filter applications by status" className="flex flex-wrap gap-2">
         {TABS.map((tab) => (

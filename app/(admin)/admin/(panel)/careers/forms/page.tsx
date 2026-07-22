@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/admin/page-header";
 import { FormsTable } from "./forms-table";
 
 export const metadata = { title: "Application Forms — SAFE Africa CMS" };
@@ -24,15 +25,12 @@ export default async function ApplicationFormsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-display text-2xl font-bold">Application forms</h1>
-          <p className="text-sm text-muted-foreground">Reusable forms and templates that power vacancy applications.</p>
-        </div>
-        <Button asChild>
-          <Link href="/admin/careers/forms/new">New form</Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Careers"
+        title="Application forms"
+        subtitle="Reusable forms and templates that power vacancy applications."
+        actions={<Button asChild><Link href="/admin/careers/forms/new">New form</Link></Button>}
+      />
       <Suspense>
         <FormsTable rows={rows} />
       </Suspense>

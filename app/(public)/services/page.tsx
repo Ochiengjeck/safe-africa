@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
 import { CmsIcon } from "@/components/site/icon";
+import { RichTextContent } from "@/components/rich-text/content";
 
 export const revalidate = 3600;
 export const metadata = {
@@ -28,7 +29,7 @@ export default async function ServicesPage() {
                   <CmsIcon name={service.icon} className="h-5 w-5 text-primary" />
                 </div>
                 <h2 className="font-display mt-4 text-lg font-semibold">{service.title}</h2>
-                <p className="mt-2 text-sm text-muted-foreground">{service.description}</p>
+                <RichTextContent html={service.description} className="prose prose-sm prose-neutral dark:prose-invert mt-2 max-w-none text-muted-foreground" />
               </div>
             </Reveal>
           ))}

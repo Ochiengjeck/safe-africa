@@ -3,7 +3,7 @@ import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
 import { Badge } from "@/components/ui/badge";
 import { FileDown } from "lucide-react";
-import { formatDate } from "@/lib/format";
+import { formatDate, stripHtml } from "@/lib/format";
 
 export const revalidate = 3600;
 export const metadata = {
@@ -57,7 +57,7 @@ export default async function ResourcesPage() {
                 {resource.title}
               </h2>
               {resource.description && (
-                <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{resource.description}</p>
+                <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{stripHtml(resource.description)}</p>
               )}
               <p className="mt-auto flex items-center gap-2 pt-4 text-sm font-medium text-primary">
                 <FileDown className="h-4 w-4" /> Download

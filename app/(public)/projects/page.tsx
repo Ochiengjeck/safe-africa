@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatPeriod } from "@/lib/format";
+import { formatPeriod, stripHtml } from "@/lib/format";
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
 import { Badge } from "@/components/ui/badge";
@@ -90,7 +90,7 @@ export default async function ProjectsPage(props: { searchParams: Promise<{ area
               <span>{project.location}</span>
             </div>
             <h2 className="font-display mt-3 text-xl font-semibold group-hover:text-primary">{project.title}</h2>
-            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{project.overview}</p>
+            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{stripHtml(project.overview)}</p>
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold text-brand-orange-deep">{project.client}</span>
               {project.thematicAreas.map((thematicArea) => (

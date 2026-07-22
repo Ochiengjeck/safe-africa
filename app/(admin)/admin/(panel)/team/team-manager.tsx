@@ -4,13 +4,13 @@ import { useActionState, useState } from "react";
 import { saveTeamMember, deleteTeamMember } from "@/lib/actions/team";
 import { restoreItem } from "@/lib/actions/trash";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { UploadField } from "@/components/upload-field";
+import { RichTextEditor } from "@/components/rich-text/editor";
 import type { TeamMember } from "@/lib/generated/prisma/client";
 
 export function TeamManager({ members }: { members: TeamMember[] }) {
@@ -56,7 +56,7 @@ export function TeamManager({ members }: { members: TeamMember[] }) {
               <Input id="title" name="title" defaultValue={editing?.title} required />
             </Field>
             <Field label="Bio" name="bio" state={state}>
-              <Textarea id="bio" name="bio" rows={3} defaultValue={editing?.bio ?? ""} />
+              <RichTextEditor name="bio" defaultValue={editing?.bio ?? ""} />
             </Field>
             <Field label="Display order" name="order" state={state}>
               <Input id="order" name="order" type="number" min={0} defaultValue={editing?.order ?? 0} />

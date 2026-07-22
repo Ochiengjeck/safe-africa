@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/admin/page-header";
 import { VacanciesTable } from "./vacancies-table";
 
 export const metadata = { title: "Vacancies — SAFE Africa CMS" };
@@ -15,12 +16,12 @@ export default async function AdminVacanciesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Vacancies</h1>
-        <Button asChild>
-          <Link href="/admin/careers/vacancies/new">New vacancy</Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Careers"
+        title="Vacancies"
+        subtitle="Draft, post, and close job openings; each links to its applications."
+        actions={<Button asChild><Link href="/admin/careers/vacancies/new">New vacancy</Link></Button>}
+      />
       <Suspense>
         <VacanciesTable vacancies={vacancies} />
       </Suspense>

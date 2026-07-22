@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import { TalentPoolTable, type TalentRow } from "./talent-pool-table";
+import { PageHeader } from "@/components/admin/page-header";
 import type { TalentStatus } from "@/lib/generated/prisma/client";
 
 export const metadata = { title: "Talent Pool — SAFE Africa CMS" };
@@ -39,10 +40,7 @@ export default async function TalentPoolPage(props: { searchParams: Promise<{ st
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold">Talent pool</h1>
-        <p className="text-sm text-muted-foreground">Professionals who signed up to be considered for future openings.</p>
-      </div>
+      <PageHeader eyebrow="Careers" title="Talent pool" subtitle="Professionals who signed up to be considered for future openings." />
 
       <nav aria-label="Filter talent pool" className="flex flex-wrap gap-2">
         {TABS.map((tab) => (

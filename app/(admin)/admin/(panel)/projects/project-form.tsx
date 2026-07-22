@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveProject } from "@/lib/actions/projects";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { UploadField } from "@/components/upload-field";
+import { RichTextEditor } from "@/components/rich-text/editor";
 import type { Project, ThematicArea } from "@/lib/generated/prisma/client";
 
 type ProjectFormProps = {
@@ -44,13 +44,13 @@ export function ProjectForm({ project, thematicAreas }: ProjectFormProps) {
         </Field>
       </div>
       <Field label="Project overview" name="overview" state={state}>
-        <Textarea id="overview" name="overview" rows={4} defaultValue={project?.overview} required />
+        <RichTextEditor name="overview" defaultValue={project?.overview} />
       </Field>
       <Field label="SAFE Africa's role" name="role" state={state}>
-        <Textarea id="role" name="role" rows={4} defaultValue={project?.role} required />
+        <RichTextEditor name="role" defaultValue={project?.role} />
       </Field>
       <Field label="Scale and results" name="scaleResults" state={state}>
-        <Textarea id="scaleResults" name="scaleResults" rows={3} defaultValue={project?.scaleResults} required />
+        <RichTextEditor name="scaleResults" defaultValue={project?.scaleResults} />
       </Field>
 
       <Field label="Thematic areas" name="thematicAreaIds" state={state}>

@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveThematicArea } from "@/lib/actions/thematic-areas";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { UploadField } from "@/components/upload-field";
+import { RichTextEditor } from "@/components/rich-text/editor";
 import type { ThematicArea } from "@/lib/generated/prisma/client";
 
 export function AreaForm({ area }: { area?: ThematicArea }) {
@@ -23,10 +23,10 @@ export function AreaForm({ area }: { area?: ThematicArea }) {
         <Input id="tagline" name="tagline" defaultValue={area?.tagline} required />
       </Field>
       <Field label="Description" name="description" state={state}>
-        <Textarea id="description" name="description" rows={5} defaultValue={area?.description} required />
+        <RichTextEditor name="description" defaultValue={area?.description} />
       </Field>
       <Field label="Our impact" name="impact" state={state}>
-        <Textarea id="impact" name="impact" rows={5} defaultValue={area?.impact} required />
+        <RichTextEditor name="impact" defaultValue={area?.impact} />
       </Field>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Icon (lucide name, e.g. sprout)" name="icon" state={state}>

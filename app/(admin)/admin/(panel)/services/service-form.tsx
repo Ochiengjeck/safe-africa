@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveService } from "@/lib/actions/services";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { UploadField } from "@/components/upload-field";
+import { RichTextEditor } from "@/components/rich-text/editor";
 import type { Service } from "@/lib/generated/prisma/client";
 
 export function ServiceForm({ service }: { service?: Service }) {
@@ -20,7 +20,7 @@ export function ServiceForm({ service }: { service?: Service }) {
         <Input id="title" name="title" defaultValue={service?.title} required />
       </Field>
       <Field label="Description" name="description" state={state}>
-        <Textarea id="description" name="description" rows={4} defaultValue={service?.description} required />
+        <RichTextEditor name="description" defaultValue={service?.description} />
       </Field>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Icon (lucide name)" name="icon" state={state}>

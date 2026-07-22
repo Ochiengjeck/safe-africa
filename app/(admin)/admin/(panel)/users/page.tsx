@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/authz";
 import { AccessDenied } from "@/components/admin/access-denied";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/admin/page-header";
 import { UsersTable } from "./users-table";
 
 export const metadata = { title: "Users — SAFE Africa CMS" };
@@ -17,12 +18,12 @@ export default async function AdminUsersPage() {
   const users = await prisma.user.findMany({ orderBy: { createdAt: "asc" } });
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Admin users</h1>
-        <Button asChild>
-          <Link href="/admin/users/new">New user</Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="System"
+        title="Admin users"
+        subtitle="People who can sign in to this CMS, and their roles."
+        actions={<Button asChild><Link href="/admin/users/new">New user</Link></Button>}
+      />
       <Suspense>
         <UsersTable users={users} currentUserId={session.user.id} />
       </Suspense>

@@ -21,9 +21,10 @@
   --accent: #eef1e7;
   --accent-foreground: #1c231d;
   --destructive: #b42318;
-  --border: #dfe2d4;
-  --input: #d4d8c8;
-  --ring: #4d9a3f;
+  --border: #d3d7c6;
+  /* Input borders were too faint to see (failed non-text contrast); darker. */
+  --input: #aeb79f;
+  --ring: #2f7d24;
   --sidebar: #16301d;
   --sidebar-foreground: #dfe8d8;
   --sidebar-accent: #234a2e;

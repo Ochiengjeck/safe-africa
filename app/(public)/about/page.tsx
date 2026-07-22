@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/page-hero";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Reveal } from "@/components/site/reveal";
 import { CmsIcon } from "@/components/site/icon";
+import { RichTextContent } from "@/components/rich-text/content";
 import { MapPin, Compass } from "lucide-react";
 
 const VALUE_ICONS = ["shield", "heart-handshake", "flask-conical", "leaf", "users"];
@@ -129,7 +130,7 @@ export default async function AboutPage() {
                 )}
                 <h3 className="font-display mt-4 font-semibold">{member.name}</h3>
                 <p className="text-sm font-medium text-brand-orange-deep">{member.title}</p>
-                {member.bio && <p className="mt-2 text-sm text-muted-foreground">{member.bio}</p>}
+                {member.bio && <RichTextContent html={member.bio} className="prose prose-sm prose-neutral dark:prose-invert mx-auto mt-2 max-w-none text-left text-muted-foreground" />}
               </div>
             ))}
           </div>

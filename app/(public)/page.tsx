@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { getSection } from "@/lib/content";
-import { formatPeriod } from "@/lib/format";
+import { formatPeriod, stripHtml } from "@/lib/format";
 import { CmsIcon } from "@/components/site/icon";
 import { SectionHeading } from "@/components/site/section-heading";
 import { Section } from "@/components/site/section";
@@ -213,7 +213,7 @@ export default async function HomePage() {
                   <h3 className="font-display mt-3 text-2xl font-semibold leading-snug group-hover:text-primary">
                     {spotlight.title}
                   </h3>
-                  <p className="mt-3 line-clamp-3 text-muted-foreground">{spotlight.overview}</p>
+                  <p className="mt-3 line-clamp-3 text-muted-foreground">{stripHtml(spotlight.overview)}</p>
                   <p className="mt-auto pt-5 text-sm font-semibold text-brand-orange-deep">{spotlight.client}</p>
                 </div>
               </Link>
@@ -261,7 +261,7 @@ export default async function HomePage() {
                 </span>
                 <div>
                   <p className="font-medium">{service.title}</p>
-                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{service.description}</p>
+                  <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{stripHtml(service.description)}</p>
                 </div>
               </li>
             </Reveal>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatPeriod } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
+import { RichTextContent } from "@/components/rich-text/content";
 import { FileDown, ArrowLeft } from "lucide-react";
 
 export const revalidate = 3600;
@@ -72,15 +73,15 @@ export default async function ProjectPage(props: { params: Promise<{ slug: strin
           )}
           <section>
             <h2 className="font-display text-xl font-semibold">Project overview</h2>
-            <p className="mt-3 whitespace-pre-line text-muted-foreground">{project.overview}</p>
+            <RichTextContent html={project.overview} className="prose prose-neutral dark:prose-invert mt-3 max-w-none" />
           </section>
           <section>
             <h2 className="font-display text-xl font-semibold">SAFE Africa&apos;s role</h2>
-            <p className="mt-3 whitespace-pre-line text-muted-foreground">{project.role}</p>
+            <RichTextContent html={project.role} className="prose prose-neutral dark:prose-invert mt-3 max-w-none" />
           </section>
           <section className="rounded-xl border-l-4 border-brand-leaf bg-muted/50 p-6">
             <h2 className="font-display text-xl font-semibold">Scale and results</h2>
-            <p className="mt-3 whitespace-pre-line text-muted-foreground">{project.scaleResults}</p>
+            <RichTextContent html={project.scaleResults} className="prose prose-neutral dark:prose-invert mt-3 max-w-none" />
           </section>
 
           {project.images.length > 0 && (

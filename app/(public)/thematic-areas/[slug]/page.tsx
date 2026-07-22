@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatPeriod } from "@/lib/format";
 import { CmsIcon } from "@/components/site/icon";
+import { RichTextContent } from "@/components/rich-text/content";
 import { ArrowRight } from "lucide-react";
 
 export const revalidate = 3600;
@@ -51,11 +52,11 @@ export default async function ThematicAreaPage(props: { params: Promise<{ slug: 
         <div className="space-y-10">
           <section>
             <h2 className="font-display text-2xl font-semibold">What we do</h2>
-            <p className="mt-4 whitespace-pre-line text-muted-foreground">{area.description}</p>
+            <RichTextContent html={area.description} className="prose prose-neutral dark:prose-invert mt-4 max-w-none" />
           </section>
           <section className="rounded-xl border-l-4 border-brand-leaf bg-muted/50 p-6">
             <h2 className="font-display text-2xl font-semibold">Our impact</h2>
-            <p className="mt-4 whitespace-pre-line text-muted-foreground">{area.impact}</p>
+            <RichTextContent html={area.impact} className="prose prose-neutral dark:prose-invert mt-4 max-w-none" />
           </section>
 
           {area.projects.length > 0 && (

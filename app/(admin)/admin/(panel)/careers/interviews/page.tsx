@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/admin/page-header";
 import { InterviewsTable, OffersTable, type InterviewRow } from "./interviews-table";
 import type { InterviewStatus, Prisma } from "@/lib/generated/prisma/client";
 
@@ -62,12 +63,12 @@ export default async function InterviewsPage(props: { searchParams: Promise<{ ta
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Interviews</h1>
-        <Button asChild>
-          <Link href="/admin/careers/interviews/new">Schedule interview</Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Careers"
+        title="Interviews"
+        subtitle="Schedule and track interviews; send offers to candidates who pass."
+        actions={<Button asChild><Link href="/admin/careers/interviews/new">Schedule interview</Link></Button>}
+      />
 
       <nav aria-label="Filter interviews" className="flex flex-wrap gap-2">
         {TABS.map((t) => (

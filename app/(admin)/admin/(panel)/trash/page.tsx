@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/authz";
 import { formatDate } from "@/lib/format";
+import { PageHeader } from "@/components/admin/page-header";
 import { TrashList, type TrashEntry } from "./trash-list";
 
 export const metadata = { title: "Trash — SAFE Africa CMS" };
@@ -40,13 +41,11 @@ export default async function TrashPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold">Trash</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Deleted items live here until restored{session.user.role === "SUPER_ADMIN" ? " or permanently removed" : ""}.
-          They are hidden from the public website.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="System"
+        title="Trash"
+        subtitle={`Deleted items live here until restored${session.user.role === "SUPER_ADMIN" ? " or permanently removed" : ""}. They are hidden from the public website.`}
+      />
       <TrashList entries={entries} canPurge={session.user.role === "SUPER_ADMIN"} />
     </div>
   );

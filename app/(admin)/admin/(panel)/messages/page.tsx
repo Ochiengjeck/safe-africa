@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
+import { PageHeader } from "@/components/admin/page-header";
 import { MessagesTable } from "./messages-table";
 
 export const metadata = { title: "Messages — SAFE Africa CMS" };
@@ -11,7 +12,7 @@ export default async function AdminMessagesPage() {
   });
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-2xl font-bold">Contact messages</h1>
+      <PageHeader eyebrow="Inbox" title="Contact messages" subtitle="Enquiries submitted through the public contact form." />
       <Suspense>
         <MessagesTable messages={messages} />
       </Suspense>

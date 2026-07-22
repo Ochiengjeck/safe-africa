@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireSession } from "@/lib/authz";
 import { AccessDenied } from "@/components/admin/access-denied";
+import { PageHeader } from "@/components/admin/page-header";
 import { SettingsForm } from "./settings-form";
 
 export const metadata = { title: "Settings — SAFE Africa CMS" };
@@ -16,7 +17,7 @@ export default async function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="font-display text-2xl font-bold">Website settings</h1>
+      <PageHeader eyebrow="System" title="Website settings" subtitle="Contact details, social links, and the map shown across the public site." />
       <SettingsForm
         defaults={{
           address: settings?.address ?? "",

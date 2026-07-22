@@ -222,7 +222,9 @@ export function AdminShell({
           </div>
         )}
 
-        <main className="p-4 md:p-8">{children}</main>
+        <main className="min-h-screen bg-gradient-to-b from-secondary/40 via-background to-background p-4 md:p-8">
+          <div className="mx-auto max-w-6xl space-y-6 md:space-y-8">{children}</div>
+        </main>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { PageHeader } from "@/components/admin/page-header";
 import { SectionEditor } from "./section-editor";
 
 export const metadata = { title: "Page Content — SAFE Africa CMS" };
@@ -19,13 +20,11 @@ export default async function AdminPagesPage() {
   const sections = await prisma.pageSection.findMany({ orderBy: { key: "asc" } });
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold">Page content</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Structured content blocks for the homepage and about page, edited as JSON. Changes publish
-          immediately.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Content"
+        title="Page content"
+        subtitle="Structured content blocks for the homepage and about page, edited as JSON. Changes publish immediately."
+      />
       <div className="space-y-4">
         {sections.map((section) => (
           <SectionEditor

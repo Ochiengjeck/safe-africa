@@ -19,3 +19,18 @@ export function formatPeriod(start: Date, end: Date | null | undefined) {
 export function formatDate(date: Date) {
   return FULL_DATE.format(date);
 }
+
+/**
+ * Strips HTML tags to a plain-text excerpt — for clamped card previews where
+ * rich content (from the editor) would break line-clamp. Safe on plain text too.
+ */
+export function stripHtml(html: string) {
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}

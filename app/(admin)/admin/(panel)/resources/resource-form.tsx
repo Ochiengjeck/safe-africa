@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useActionState } from "react";
 import { saveResource } from "@/lib/actions/resources";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Field, FormError } from "@/components/admin/field";
 import { SubmitButton } from "@/components/admin/submit-button";
 import { UploadField } from "@/components/upload-field";
+import { RichTextEditor } from "@/components/rich-text/editor";
 import type { Resource, ThematicArea } from "@/lib/generated/prisma/client";
 
 type ResourceFormProps = {
@@ -56,7 +56,7 @@ export function ResourceForm({ resource, thematicAreas }: ResourceFormProps) {
         </Field>
       </div>
       <Field label="Description" name="description" state={state}>
-        <Textarea id="description" name="description" rows={3} defaultValue={resource?.description ?? ""} />
+        <RichTextEditor name="description" defaultValue={resource?.description ?? ""} />
       </Field>
       <UploadField
         name="fileUrl"

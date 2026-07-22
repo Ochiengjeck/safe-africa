@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/admin/page-header";
 import { ProjectsTable } from "./projects-table";
 
 export const metadata = { title: "Projects — SAFE Africa CMS" };
@@ -15,12 +16,12 @@ export default async function AdminProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Projects</h1>
-        <Button asChild>
-          <Link href="/admin/projects/new">New project</Link>
-        </Button>
-      </div>
+      <PageHeader
+        eyebrow="Content"
+        title="Projects"
+        subtitle="Case studies and assignments showcased on the public site."
+        actions={<Button asChild><Link href="/admin/projects/new">New project</Link></Button>}
+      />
       <Suspense>
         <ProjectsTable projects={projects} />
       </Suspense>
