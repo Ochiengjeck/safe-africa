@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatPeriod } from "@/lib/format";
@@ -40,8 +41,14 @@ export default async function ThematicAreaPage(props: { params: Promise<{ slug: 
 
   return (
     <main>
-      <section className="bg-sidebar text-sidebar-foreground">
-        <div className="mx-auto max-w-6xl px-4 py-16">
+      <section className="relative overflow-hidden bg-sidebar">
+        {area.coverImage && (
+          <>
+            <Image src={area.coverImage} alt="" fill sizes="100vw" className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-sidebar via-sidebar/90 to-sidebar/50" />
+          </>
+        )}
+        <div className="relative mx-auto max-w-6xl px-4 py-16 text-sidebar-foreground">
           <CmsIcon name={area.icon} className="h-9 w-9 text-brand-gold" />
           <h1 className="font-display mt-4 max-w-3xl text-3xl font-bold sm:text-4xl">{area.title}</h1>
           <p className="mt-3 max-w-2xl text-lg italic opacity-85">{area.tagline}</p>

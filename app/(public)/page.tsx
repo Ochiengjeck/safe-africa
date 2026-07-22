@@ -180,8 +180,16 @@ export default async function HomePage() {
                   href={`/thematic-areas/${area.slug}`}
                   className={`group flex items-center gap-4 border-b border-l-4 px-4 py-5 transition-colors first:border-t hover:bg-secondary/40 sm:gap-5 sm:px-5 sm:py-6 ${ROW_ACCENTS[i % ROW_ACCENTS.length]}`}
                 >
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary sm:h-11 sm:w-11">
-                    <CmsIcon name={area.icon} className="h-5 w-5 text-primary" />
+                  <span className="relative flex h-16 w-24 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-secondary sm:h-20 sm:w-28">
+                    {area.coverImage ? (
+                      <Image src={area.coverImage} alt="" fill sizes="112px" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    ) : (
+                      <CmsIcon name={area.icon} className="h-5 w-5 text-primary" />
+                    )}
+                    <span className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" aria-hidden="true" />
+                    <span className="absolute bottom-1.5 left-1.5 flex h-6 w-6 items-center justify-center rounded-md bg-white/90 shadow-sm">
+                      <CmsIcon name={area.icon} className="h-3.5 w-3.5 text-primary" />
+                    </span>
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="font-display block text-base font-semibold group-hover:text-primary sm:text-lg">

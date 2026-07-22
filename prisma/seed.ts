@@ -46,6 +46,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa strengthens agriculture, food, and nutrition systems by generating evidence that improves productivity, market performance, dietary diversity, and access to nutritious foods. Our work supports resilient agri-food systems, strengthens value chains, and promotes practical innovations—including digital agriculture solutions—that help farmers, agribusinesses, and institutions make better decisions.",
     icon: "sprout",
+    coverImage: "/images/afns.jpeg",
     order: 1,
   },
   {
@@ -57,6 +58,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa advances girls' and women's empowerment by producing evidence that informs inclusive policies, programs, and investments. Our work helps reduce barriers to participation, expand economic opportunities, and strengthen the agency, voice, and decision-making power of women and girls in development processes and livelihood systems.",
     icon: "users",
+    coverImage: "/images/gwe.jpeg",
     order: 2,
   },
   {
@@ -68,6 +70,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa contributes to youth skills and workforce development by generating evidence that helps partners design effective education, training, and enterprise support initiatives. Our work identifies opportunities for employability, entrepreneurship, and skills development, equipping young people to participate more productively in agriculture and the broader economy.",
     icon: "graduation-cap",
+    coverImage: "/images/yswd.jpeg",
     order: 3,
   },
   {
@@ -79,6 +82,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa strengthens resilience to climate and environmental risks by promoting climate-smart agriculture, sustainable land and water management, and responsible natural resource stewardship. Our evidence and advisory work helps partners assess environmental risks, undertake natural resource and project assessments, adopt adaptive practices, and protect ecosystems while sustaining productivity.",
     icon: "leaf",
+    coverImage: "/images/canrm.jpeg",
     order: 4,
   },
   {
@@ -90,6 +94,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa supports WASH programs through research, monitoring, evaluation, and evidence generation that improve health, resilience, and sustainability for communities and institutions.",
     icon: "droplets",
+    coverImage: "/images/wsh.jpeg",
     order: 5,
   },
   {
@@ -101,6 +106,7 @@ const thematicAreas = [
     impact:
       "SAFE Africa supports stronger social protection systems by generating evidence that improves program design, targeting, responsiveness, and inclusion for vulnerable populations. Our work helps governments and development partners better understand livelihoods, shocks, coping strategies, and service access so they can strengthen resilience, reduce vulnerability, and improve well-being.",
     icon: "shield",
+    coverImage: "/images/sp.jpeg",
     order: 6,
   },
 ];
@@ -109,16 +115,16 @@ const services = [
   ["baseline-endline-surveys", "Baseline & Endline Surveys", "Designing and implementing comprehensive surveys to establish benchmarks and measure project outcomes.", "clipboard-list"],
   ["impact-assessments-evaluations", "Impact Assessments & Evaluations", "Conducting rigorous evaluations to determine effectiveness, sustainability, and scalability of interventions.", "bar-chart-3"],
   ["randomized-experimental-studies", "Randomized Experimental Studies", "Applying advanced research methods to generate credible, data-driven insights for policy and practice.", "flask-conical"],
-  ["feasibility-studies", "Feasibility Studies", "Assessing project viability, risks, and opportunities to support informed investment and implementation decisions.", "search-check"],
-  ["agri-enterprise-financial-advisory", "Agri-enterprise Financial Analysis & Advisory", "Financial and economic analysis, business advisory, and investment support for agribusinesses, producer organizations, and agricultural enterprises — enterprise diagnostics, cost-benefit analysis, profitability assessment, financial modeling, and strategic advice.", "banknote"],
+  ["feasibility-studies", "Feasibility Studies", "Assessing project viability, risks, and opportunities to support informed investment and implementation decisions.", "search-check", "/images/service-feasibility-demo-farm.jpeg"],
+  ["agri-enterprise-financial-advisory", "Agri-enterprise Financial Analysis & Advisory", "Financial and economic analysis, business advisory, and investment support for agribusinesses, producer organizations, and agricultural enterprises — enterprise diagnostics, cost-benefit analysis, profitability assessment, financial modeling, and strategic advice.", "banknote", "/images/service-financial-advisory-training.jpeg"],
   ["food-nutritional-security-analysis", "Food & Nutritional Security Analysis", "Expert insights into food systems, dietary diversity, and nutrition outcomes for vulnerable populations.", "wheat"],
   ["livelihood-analysis", "Livelihood Analysis", "Evaluating household and community-level livelihoods to strengthen resilience and economic inclusion.", "home"],
-  ["wash", "Water, Sanitation & Hygiene (WASH)", "Supporting WASH programs through research, monitoring, evaluation, and evidence generation.", "droplets"],
+  ["wash", "Water, Sanitation & Hygiene (WASH)", "Supporting WASH programs through research, monitoring, evaluation, and evidence generation.", "droplets", "/images/service-wash-borehole-drilling.jpeg"],
   ["gender-social-inclusion", "Gender & Social Inclusion", "Mainstreaming equity by integrating gender and social justice into agricultural and development programs.", "heart-handshake"],
   ["climate-smart-agriculture-nrm", "Climate-Smart Agriculture & NRM", "Promoting sustainable practices that enhance resilience, conserve ecosystems, and adapt to climate change.", "cloud-sun"],
   ["data-management-analytics", "Data Management & Analytics", "Applying strong analytical methods and digital tools to deliver accurate, timely, and actionable insights.", "database"],
   ["multi-cultural-regional-expertise", "Multi-Cultural & Regional Expertise", "Delivering consultancy assignments across Kenya and African countries with sensitivity to diverse contexts.", "globe"],
-].map(([slug, title, description, icon], i) => ({ slug, title, description, icon, order: i + 1 }));
+].map(([slug, title, description, icon, image], i) => ({ slug, title, description, icon, image, order: i + 1 }));
 
 const projects = [
   {
@@ -135,6 +141,7 @@ const projects = [
     scaleResults:
       "SAFE Africa administered household surveys to 3,800 households across 380 villages in four counties, delivering high-quality baseline data to inform policy and program design.",
     areas: ["agriculture-food-nutrition-systems", "youth-skills-workforce-development"],
+    coverImage: "/images/project-kjade-baseline-cover.jpeg",
   },
   {
     slug: "kjade-mapping-listing",
@@ -150,6 +157,7 @@ const projects = [
     scaleResults:
       "SAFE Africa listed households in 380 villages across the four study counties, providing a reliable sampling frame for the subsequent baseline evaluation.",
     areas: ["agriculture-food-nutrition-systems"],
+    coverImage: "/images/project-kjade-mapping-team-briefing.jpeg",
   },
   {
     slug: "machakos-resilience-feasibility-study",
@@ -165,6 +173,7 @@ const projects = [
     scaleResults:
       "The study generated evidence to inform project design, implementation planning, and investment decisions for a resilience-focused program in semi-arid rural communities.",
     areas: ["wash", "climate-change-nrm"],
+    coverImage: "/images/project-machakos-resilience-cover.jpeg",
   },
   {
     slug: "restore-africa-baseline-evaluation",
@@ -180,6 +189,7 @@ const projects = [
     scaleResults:
       "SAFE Africa conducted baseline evaluation activities with 1,700 households, generating evidence to support implementation of large-scale landscape restoration and livelihoods programs.",
     areas: ["climate-change-nrm"],
+    coverImage: "/images/project-restore-africa-solar-water-tank.jpeg",
   },
   {
     slug: "seed-systems-injustices-study",
@@ -195,6 +205,129 @@ const projects = [
     scaleResults:
       "The assignment produced actionable evidence on inclusion and equity in seed systems, helping to inform more responsive and inclusive agricultural programming.",
     areas: ["agriculture-food-nutrition-systems", "girls-womens-empowerment", "social-protection"],
+    coverImage: "/images/project-seed-systems-community-meeting.jpeg",
+  },
+];
+
+const projectImages: { projectSlug: string; url: string; caption: string; order: number }[] = [
+  {
+    projectSlug: "kjade-baseline-evaluation",
+    url: "/images/project-kjade-baseline-tea-monitoring.jpeg",
+    caption: "Field monitoring visit to a smallholder tea farm in Meru County.",
+    order: 1,
+  },
+  {
+    projectSlug: "kjade-baseline-evaluation",
+    url: "/images/project-kjade-baseline-household-interview.jpeg",
+    caption: "Household survey interview during the KJADE baseline data collection.",
+    order: 2,
+  },
+  {
+    projectSlug: "kjade-baseline-evaluation",
+    url: "/images/project-kjade-baseline-training-workshop.jpeg",
+    caption: "Stakeholder training and Q&A session on digital agriculture tools.",
+    order: 3,
+  },
+  {
+    projectSlug: "kjade-mapping-listing",
+    url: "/images/project-kjade-mapping-child-measurement.jpeg",
+    caption: "Field team collecting household demographic and nutrition data.",
+    order: 1,
+  },
+  {
+    projectSlug: "kjade-mapping-listing",
+    url: "/images/project-kjade-mapping-household-interview.jpeg",
+    caption: "Enumerator conducting a household listing interview.",
+    order: 2,
+  },
+  {
+    projectSlug: "machakos-resilience-feasibility-study",
+    url: "/images/project-machakos-resilience-drip-irrigation.jpeg",
+    caption: "Drip-irrigated maize and beans demonstrating climate-smart practices.",
+    order: 1,
+  },
+  {
+    projectSlug: "machakos-resilience-feasibility-study",
+    url: "/images/project-machakos-resilience-site-visit.jpeg",
+    caption: "Partner delegation reviewing feasibility study field sites.",
+    order: 2,
+  },
+  {
+    projectSlug: "machakos-resilience-feasibility-study",
+    url: "/images/project-machakos-resilience-household-interview.jpeg",
+    caption: "Household interview supporting the resilience feasibility assessment.",
+    order: 3,
+  },
+  {
+    projectSlug: "machakos-resilience-feasibility-study",
+    url: "/images/project-machakos-resilience-field-team.jpeg",
+    caption: "SAFE Africa field team on assignment in Machakos County.",
+    order: 4,
+  },
+  {
+    projectSlug: "restore-africa-baseline-evaluation",
+    url: "/images/project-restore-africa-tomato-field.jpeg",
+    caption: "Crop monitoring on a tomato farming site under the Restore Africa programme.",
+    order: 1,
+  },
+  {
+    projectSlug: "restore-africa-baseline-evaluation",
+    url: "/images/project-restore-africa-watermelon-crop.jpeg",
+    caption: "Horticulture crop monitoring documenting watermelon production.",
+    order: 2,
+  },
+  {
+    projectSlug: "restore-africa-baseline-evaluation",
+    url: "/images/project-restore-africa-borehole-pump.jpeg",
+    caption: "A hand-pump borehole supporting rural water access.",
+    order: 3,
+  },
+  {
+    projectSlug: "seed-systems-injustices-study",
+    url: "/images/project-seed-systems-womens-group.jpeg",
+    caption: "Women's group engagement as part of the seed systems study.",
+    order: 1,
+  },
+];
+
+const posts = [
+  {
+    slug: "new-nairobi-office",
+    type: "NEWS" as const,
+    title: "A new home for our growing team",
+    excerpt: "SAFE Africa has moved into a larger Nairobi office to support our expanding portfolio of research, evaluation, and advisory engagements.",
+    body: "As our portfolio of research, evaluation, and advisory assignments has grown, so has our team. We've moved into a larger Nairobi office with more room for collaboration, client meetings, and field-team planning sessions, giving us the space we need to keep delivering high-quality evidence for our partners.",
+    coverImage: "/images/media-new-office.jpeg",
+    publishedAt: new Date("2026-05-12"),
+  },
+  {
+    slug: "team-celebrates-project-milestones",
+    type: "NEWS" as const,
+    title: "Celebrating the team behind the evidence",
+    excerpt: "Our team took time out to celebrate the hard work behind recent milestone assignments, from baseline evaluations to household surveys across Kenya.",
+    body: "Behind every baseline evaluation, household survey, and feasibility study is a team that puts in the work — from field enumerators to data analysts. We recently took a moment to celebrate that effort together, marking the completion of several major assignments and the relationships built along the way.",
+    coverImage: "/images/media-team-celebration.jpeg",
+    publishedAt: new Date("2026-06-20"),
+  },
+  {
+    slug: "hosting-partners-for-a-site-visit",
+    type: "NEWS" as const,
+    title: "Hosting partners for a project site visit",
+    excerpt: "SAFE Africa welcomed partner representatives for a site visit, showcasing our fieldwork and strengthening collaboration on current assignments.",
+    body: "Site visits give our partners a first-hand look at how our fieldwork translates into the evidence they rely on. We recently hosted partner representatives at one of our project locations, walking through our data collection processes and discussing how the findings are shaping program decisions.",
+    coverImage: "/images/media-partner-site-visit.jpeg",
+    publishedAt: new Date("2026-04-18"),
+  },
+  {
+    slug: "safe-africa-at-agritech-digest-scaleup-conference",
+    type: "EVENT" as const,
+    title: "SAFE Africa at the Agritech Digest Scale-Up Conference",
+    excerpt: "Our team joined a panel session on navigating agribusiness growth in Africa, sharing evidence-based perspectives with industry peers.",
+    body: "SAFE Africa took part in a panel discussion on navigating agribusiness and agritech scale-up in Africa, joining industry leaders to share perspectives on what it takes to grow evidence-driven agricultural enterprises across the continent. It was a valuable opportunity to connect with partners and peers shaping the sector's future.",
+    coverImage: "/images/media-agritech-conference-panel.jpeg",
+    eventDate: new Date("2026-03-10"),
+    eventLocation: "Nairobi, Kenya",
+    publishedAt: new Date("2026-03-10"),
   },
 ];
 
@@ -428,6 +561,24 @@ async function main() {
     });
   }
   console.log(`Projects: ${projects.length}`);
+
+  for (const slug of new Set(projectImages.map((image) => image.projectSlug))) {
+    const project = await prisma.project.findUnique({ where: { slug }, select: { id: true } });
+    if (!project) continue;
+    await prisma.projectImage.deleteMany({ where: { projectId: project.id } });
+    await prisma.projectImage.createMany({
+      data: projectImages
+        .filter((image) => image.projectSlug === slug)
+        .map(({ url, caption, order }) => ({ url, caption, order, projectId: project.id })),
+    });
+  }
+  console.log(`Project images: ${projectImages.length}`);
+
+  for (const post of posts) {
+    const data = { ...post, body: plainTextToHtml(post.body) };
+    await prisma.post.upsert({ where: { slug: post.slug }, update: data, create: data });
+  }
+  console.log(`Posts: ${posts.length}`);
 
   for (const section of pageSections) {
     await prisma.pageSection.upsert({

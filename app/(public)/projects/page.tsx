@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { formatPeriod, stripHtml } from "@/lib/format";
 import { PageHero } from "@/components/site/page-hero";
@@ -82,22 +83,41 @@ export default async function ProjectsPage(props: { searchParams: Promise<{ area
           <Reveal key={project.id} delay={Math.min(i, 4) * 60}>
           <Link
             href={`/projects/${project.slug}`}
-            className="group block rounded-xl border bg-card p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+            className="group flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md sm:flex-row"
           >
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs uppercase tracking-wider text-muted-foreground">
-              <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>
-              <span aria-hidden="true">·</span>
-              <span>{project.location}</span>
+            <div className="relative aspect-[16/9] shrink-0 overflow-hidden bg-secondary sm:aspect-auto sm:h-auto sm:w-56">
+              {project.coverImage ? (
+                <Image
+                  src={project.coverImage}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 100vw, 224px"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="evidence-bars" aria-hidden="true">
+                    <span /><span /><span /><span />
+                  </span>
+                </div>
+              )}
             </div>
-            <h2 className="font-display mt-3 text-xl font-semibold group-hover:text-primary">{project.title}</h2>
-            <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{stripHtml(project.overview)}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-brand-orange-deep">{project.client}</span>
-              {project.thematicAreas.map((thematicArea) => (
-                <Badge key={thematicArea.slug} variant="secondary">
-                  {thematicArea.title}
-                </Badge>
-              ))}
+            <div className="flex-1 p-6">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs uppercase tracking-wider text-muted-foreground">
+                <span>{formatPeriod(project.periodStart, project.periodEnd)}</span>
+                <span aria-hidden="true">·</span>
+                <span>{project.location}</span>
+              </div>
+              <h2 className="font-display mt-3 text-xl font-semibold group-hover:text-primary">{project.title}</h2>
+              <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{stripHtml(project.overview)}</p>
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-sm font-semibold text-brand-orange-deep">{project.client}</span>
+                {project.thematicAreas.map((thematicArea) => (
+                  <Badge key={thematicArea.slug} variant="secondary">
+                    {thematicArea.title}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </Link>
           </Reveal>
