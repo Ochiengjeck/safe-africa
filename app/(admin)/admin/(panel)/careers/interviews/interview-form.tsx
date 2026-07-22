@@ -24,29 +24,122 @@ export type InterviewInitial = {
   notes?: string | null;
 };
 
+export type ApplicantOption = { id: string; name: string; email: string; vacancyId: string; vacancyTitle: string };
+export type TalentOption = { id: string; name: string; email: string; title: string };
+
+type Source = "manual" | "applicant" | "talent";
+
 export function InterviewForm({
   initial,
   vacancies,
+  applicants = [],
+  talent = [],
 }: {
   initial?: InterviewInitial;
   vacancies: { id: string; title: string }[];
+  applicants?: ApplicantOption[];
+  talent?: TalentOption[];
 }) {
   const [state, action] = useActionState(scheduleInterview, null);
+
+  const [source, setSource] = useState<Source>(
+    initial?.applicationId ? "applicant" : initial?.talentPoolId ? "talent" : "manual"
+  );
+  const [applicationId, setApplicationId] = useState(initial?.applicationId ?? "");
+  const [talentPoolId, setTalentPoolId] = useState(initial?.talentPoolId ?? "");
   const [vacancyId, setVacancyId] = useState(initial?.vacancyId ?? "");
+  const [candidateName, setCandidateName] = useState(initial?.candidateName ?? "");
+  const [candidateEmail, setCandidateEmail] = useState(initial?.candidateEmail ?? "");
+  const [positionTitle, setPositionTitle] = useState(initial?.positionTitle ?? "");
+
+  const isEditing = Boolean(initial?.id);
+
+  function changeSource(next: Source) {
+    setSource(next);
+    setApplicationId("");
+    setTalentPoolId("");
+    if (next === "manual") {
+      setCandidateName("");
+      setCandidateEmail("");
+      setPositionTitle("");
+    }
+  }
+
+  function pickApplicant(id: string) {
+    setApplicationId(id);
+    const a = applicants.find((x) => x.id === id);
+    if (a) {
+      setCandidateName(a.name);
+      setCandidateEmail(a.email);
+      setVacancyId(a.vacancyId);
+      setPositionTitle(a.vacancyTitle);
+    }
+  }
+
+  function pickTalent(id: string) {
+    setTalentPoolId(id);
+    const t = talent.find((x) => x.id === id);
+    if (t) {
+      setCandidateName(t.name);
+      setCandidateEmail(t.email);
+      setPositionTitle(t.title);
+    }
+  }
 
   return (
     <form action={action} className="max-w-2xl space-y-5">
       {initial?.id && <input type="hidden" name="id" value={initial.id} />}
-      {initial?.applicationId && <input type="hidden" name="applicationId" value={initial.applicationId} />}
-      {initial?.talentPoolId && <input type="hidden" name="talentPoolId" value={initial.talentPoolId} />}
+      <input type="hidden" name="applicationId" value={applicationId} />
+      <input type="hidden" name="talentPoolId" value={talentPoolId} />
       <FormError state={state} />
+
+      {!isEditing && (applicants.length > 0 || talent.length > 0) && (
+        <div className="space-y-3 rounded-lg border bg-muted/30 p-4">
+          <p className="text-sm font-medium">Who are you interviewing?</p>
+          <div className="flex flex-wrap gap-2">
+            {(["applicant", "talent", "manual"] as Source[]).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => changeSource(s)}
+                className={`rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
+                  source === s ? "border-primary bg-primary text-primary-foreground" : "hover:bg-accent"
+                }`}
+              >
+                {s === "applicant" ? "An applicant" : s === "talent" ? "Talent pool candidate" : "Enter manually"}
+              </button>
+            ))}
+          </div>
+
+          {source === "applicant" && (
+            <select value={applicationId} onChange={(e) => pickApplicant(e.target.value)} className={SELECT_CLASS}>
+              <option value="">Select an applicant…</option>
+              {applicants.map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name} — {a.vacancyTitle}
+                </option>
+              ))}
+            </select>
+          )}
+          {source === "talent" && (
+            <select value={talentPoolId} onChange={(e) => pickTalent(e.target.value)} className={SELECT_CLASS}>
+              <option value="">Select a talent pool candidate…</option>
+              {talent.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name} — {t.title}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+      )}
 
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Candidate name" name="candidateName" state={state}>
-          <Input id="candidateName" name="candidateName" defaultValue={initial?.candidateName} required />
+          <Input id="candidateName" name="candidateName" value={candidateName} onChange={(e) => setCandidateName(e.target.value)} required />
         </Field>
         <Field label="Candidate email" name="candidateEmail" state={state}>
-          <Input id="candidateEmail" name="candidateEmail" type="email" defaultValue={initial?.candidateEmail} required />
+          <Input id="candidateEmail" name="candidateEmail" type="email" value={candidateEmail} onChange={(e) => setCandidateEmail(e.target.value)} required />
         </Field>
       </div>
 
@@ -60,13 +153,7 @@ export function InterviewForm({
       </Field>
 
       <Field label="Position / role" name="positionTitle" state={state}>
-        <Input
-          id="positionTitle"
-          name="positionTitle"
-          defaultValue={initial?.positionTitle}
-          required
-          placeholder="e.g. Field Enumerator, or a general role"
-        />
+        <Input id="positionTitle" name="positionTitle" value={positionTitle} onChange={(e) => setPositionTitle(e.target.value)} required placeholder="e.g. Field Enumerator, or a general role" />
       </Field>
 
       <div className="grid gap-5 sm:grid-cols-2">

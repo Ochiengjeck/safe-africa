@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { ApplicationsGroup, type AppRow } from "./applications-group";
-import { defaultApplicationFields, type FormField } from "@/lib/careers/form-fields";
 import type { ApplicationStatus } from "@/lib/generated/prisma/client";
 
 export const metadata = { title: "Applications — SAFE Africa CMS" };
@@ -24,7 +23,7 @@ export default async function ApplicationsInboxPage(props: { searchParams: Promi
     prisma.application.findMany({
       where: { deletedAt: null, ...(activeTab.status ? { status: activeTab.status } : {}) },
       orderBy: { createdAt: "desc" },
-      include: { vacancy: { select: { id: true, title: true, form: { select: { fields: true } } } } },
+      include: { vacancy: { select: { id: true, title: true } } },
     }),
     prisma.application.groupBy({ by: ["status"], where: { deletedAt: null }, _count: true }),
   ]);
@@ -35,24 +34,19 @@ export default async function ApplicationsInboxPage(props: { searchParams: Promi
       : counts.reduce((sum, c) => sum + c._count, 0);
 
   // Group applications per vacancy (preserving the ordering).
-  const groups = new Map<string, { title: string; fields: FormField[]; rows: AppRow[] }>();
+  const groups = new Map<string, { title: string; rows: AppRow[] }>();
   for (const app of applications) {
     let group = groups.get(app.vacancy.id);
     if (!group) {
-      const fields = (app.vacancy.form?.fields as FormField[] | undefined) ?? defaultApplicationFields();
-      group = { title: app.vacancy.title, fields, rows: [] };
+      group = { title: app.vacancy.title, rows: [] };
       groups.set(app.vacancy.id, group);
     }
     group.rows.push({
       id: app.id,
       name: app.name,
       email: app.email,
-      phone: app.phone,
       status: app.status,
       received: formatDate(app.createdAt),
-      cvUrl: app.cvUrl,
-      coverLetter: app.coverLetter,
-      answers: (app.answers as Record<string, unknown> | null) ?? null,
     });
   }
 
@@ -90,7 +84,7 @@ export default async function ApplicationsInboxPage(props: { searchParams: Promi
       ) : (
         <div className="space-y-10">
           {[...groups.entries()].map(([id, group]) => (
-            <ApplicationsGroup key={id} vacancyTitle={group.title} rows={group.rows} fields={group.fields} />
+            <ApplicationsGroup key={id} vacancyTitle={group.title} rows={group.rows} />
           ))}
         </div>
       )}

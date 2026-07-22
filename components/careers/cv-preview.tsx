@@ -4,6 +4,14 @@ import { Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { TalentPoolInput } from "@/lib/validation";
 
+// Fixed palette — the CV renders on a white sheet in both light and dark mode,
+// so it must not use theme tokens (which invert in dark mode and disappear).
+const INK = "#1c231d";
+const MUTED = "#5c6357";
+const GREEN = "#1a5632";
+const ORANGE = "#c2410c";
+const BLUE = "#2a6bb5";
+
 /**
  * Renders a talent-pool profile as a formatted, print-friendly CV. Export is
  * browser print-to-PDF (the toolbar is hidden when printing via `print:hidden`).
@@ -19,19 +27,19 @@ export function CvPreview({ data, showToolbar = true }: { data: Partial<TalentPo
         </div>
       )}
 
-      <article className="mx-auto max-w-3xl rounded-xl border bg-white p-8 text-[#1c231d] shadow-sm print:border-0 print:shadow-none">
-        <header className="border-b pb-4">
+      <article className="mx-auto max-w-3xl rounded-xl border bg-white p-8 shadow-sm print:border-0 print:shadow-none" style={{ color: INK }}>
+        <header className="border-b pb-4" style={{ borderColor: "#e2e6da" }}>
           <h1 className="font-display text-2xl font-bold">{data.fullName}</h1>
-          {data.professionalTitle && <p className="mt-1 text-brand-orange-deep">{data.professionalTitle}</p>}
-          <p className="mt-2 text-sm text-muted-foreground">
+          {data.professionalTitle && <p className="mt-1 font-medium" style={{ color: ORANGE }}>{data.professionalTitle}</p>}
+          <p className="mt-2 text-sm" style={{ color: MUTED }}>
             {[data.location, data.nationality].filter(Boolean).join(" · ")}
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm" style={{ color: MUTED }}>
             {[data.primaryEmail, data.primaryPhone].filter(Boolean).join(" · ")}
           </p>
           {data.linkedinUrl && (
             <p className="text-sm">
-              <a href={data.linkedinUrl} className="text-brand-blue underline" target="_blank" rel="noreferrer">
+              <a href={data.linkedinUrl} className="underline" style={{ color: BLUE }} target="_blank" rel="noreferrer">
                 {data.linkedinUrl}
               </a>
             </p>
@@ -104,7 +112,7 @@ export function CvPreview({ data, showToolbar = true }: { data: Partial<TalentPo
             {data.researchAndPublications.map((r, i) => (
               <Entry key={i} heading={r.title} meta={r.partners}>
                 {r.abstractOrRole && <p className="text-sm">{r.abstractOrRole}</p>}
-                {r.link && <a href={r.link} className="text-sm text-brand-blue underline" target="_blank" rel="noreferrer">{r.link}</a>}
+                {r.link && <a href={r.link} className="text-sm underline" style={{ color: BLUE }} target="_blank" rel="noreferrer">{r.link}</a>}
               </Entry>
             ))}
           </Section>
@@ -137,7 +145,7 @@ export function CvPreview({ data, showToolbar = true }: { data: Partial<TalentPo
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-5">
-      <h2 className="font-display text-sm font-bold uppercase tracking-wide text-brand-leaf">{title}</h2>
+      <h2 className="font-display text-sm font-bold uppercase tracking-wide" style={{ color: GREEN }}>{title}</h2>
       <div className="mt-2 space-y-3">{children}</div>
     </section>
   );
@@ -147,7 +155,7 @@ function Entry({ heading, meta, children }: { heading: string; meta?: string; ch
   return (
     <div>
       <p className="text-sm font-semibold">{heading}</p>
-      {meta && <p className="font-mono text-xs text-muted-foreground">{meta}</p>}
+      {meta && <p className="font-mono text-xs" style={{ color: MUTED }}>{meta}</p>}
       {children && <div className="mt-1">{children}</div>}
     </div>
   );

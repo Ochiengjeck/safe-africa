@@ -90,6 +90,40 @@ export async function scheduleInterview(_prev: ActionState, formData: FormData):
   redirect("/admin/careers/interviews?saved=Interview+scheduled");
 }
 
+/**
+ * Creates draft interviews for several applicants at once (from a bulk action).
+ * No email is sent — the placeholder time is a reminder to set the real slot in
+ * the interview editor, which notifies the candidate when the time is set.
+ */
+export async function bulkCreateInterviews(applicationIds: string[]) {
+  await requireRole("ADMIN");
+  if (applicationIds.length === 0) return;
+
+  const apps = await prisma.application.findMany({
+    where: { id: { in: applicationIds }, deletedAt: null },
+    include: { vacancy: { select: { id: true, title: true } } },
+  });
+
+  const placeholder = new Date(Date.now() + 7 * 24 * 3600 * 1000);
+  placeholder.setMinutes(0, 0, 0);
+
+  await prisma.interview.createMany({
+    data: apps.map((a) => ({
+      applicationId: a.id,
+      vacancyId: a.vacancy.id,
+      positionTitle: a.vacancy.title,
+      candidateName: a.name,
+      candidateEmail: a.email,
+      scheduledAt: placeholder,
+      mode: "VIDEO" as InterviewMode,
+      status: "SCHEDULED" as InterviewStatus,
+      notifiedScheduled: false,
+    })),
+  });
+
+  revalidatePath("/admin/careers/interviews");
+}
+
 export async function setInterviewOutcome(id: string, status: InterviewStatus) {
   await requireRole("ADMIN");
   await prisma.interview.update({ where: { id }, data: { status } });
