@@ -202,9 +202,8 @@ const pageSections: { key: string; content: unknown }[] = [
   {
     key: "home.hero",
     content: {
-      title: "Advancing Data-Driven Insights to Improve Livelihoods",
-      subtitle:
-        "SAFE Africa is a Kenya-registered research, evaluation, and advisory firm generating evidence that informs policy, strengthens programs, and guides investment across Africa.",
+      title: "Smart Agriculture and Food Economics Africa Ltd (SAFE Africa Ltd)",
+      subtitle: "Generating Data-Driven Evidence to Improve Livelihoods",
       primaryCta: { label: "Explore Our Work", href: "/projects" },
       secondaryCta: { label: "Contact Us", href: "/contact" },
     },

@@ -30,8 +30,8 @@ const SEGMENT_ICONS = ["sprout", "shield", "heart-handshake", "banknote", "users
 export default async function HomePage() {
   const [hero, stats, clients, cta, thematicAreas, featuredProjects, services] = await Promise.all([
     getSection<Hero>("home.hero", {
-      title: "Advancing Data-Driven Insights to Improve Livelihoods",
-      subtitle: "Research, evaluation, and advisory services across Africa.",
+      title: "Smart Agriculture and Food Economics Africa Ltd (SAFE Africa Ltd)",
+      subtitle: "Generating Data-Driven Evidence to Improve Livelihoods",
       primaryCta: { label: "Explore Our Work", href: "/projects" },
       secondaryCta: { label: "Contact Us", href: "/contact" },
     }),
@@ -57,17 +57,61 @@ export default async function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative flex items-center overflow-hidden lg:min-h-[calc(100dvh-4rem)]">
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-12 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
-          <div className="rise-in">
-            <p className="font-mono text-xs font-medium uppercase tracking-widest text-primary">
-              Research · Evaluation · Advisory
-            </p>
-            <h1 className="font-display mt-4 max-w-xl text-[2rem] font-extrabold leading-[1.1] sm:text-5xl sm:leading-[1.08] lg:text-6xl">
+      <section className="relative rise-in">
+        <div className="relative h-[calc(100dvh-4rem)] min-h-[480px] w-full overflow-hidden">
+          <Image
+            src="/images/heroimage.jpg"
+            alt="A SAFE Africa field researcher harvesting tomatoes and kale beside grazing cattle, ripe mangoes, and sorghum on a Kenyan smallholder farm"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div
+            className="absolute inset-x-0 top-0 h-2/3 bg-gradient-to-b from-sky-950/70 via-sky-900/15 to-transparent"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/45 to-transparent"
+            aria-hidden="true"
+          />
+
+          <div className="absolute inset-x-0 top-0 flex flex-col items-center px-4 pt-6 text-center sm:pt-10 lg:pt-14">
+            <h1 className="font-display max-w-3xl text-balance text-xl font-extrabold leading-tight text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5)] sm:text-3xl lg:max-w-none lg:whitespace-nowrap lg:text-3xl xl:text-4xl">
               {hero.title}
             </h1>
-            <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">{hero.subtitle}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-3 flex items-center gap-3 sm:mt-5 sm:gap-4">
+              <span className="h-px w-8 bg-white/80 sm:w-16" aria-hidden="true" />
+              <p className="font-display text-xs italic text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.5)] sm:text-base lg:text-lg">
+                {hero.subtitle}
+              </p>
+              <span className="h-px w-8 bg-white/80 sm:w-16" aria-hidden="true" />
+            </div>
+          </div>
+
+          <div className="absolute bottom-3 right-3 flex items-center gap-2.5 rounded-2xl rounded-tl-[2.5rem] bg-background/95 px-3 py-2.5 shadow-lg backdrop-blur sm:bottom-6 sm:right-6 sm:gap-3 sm:px-4 sm:py-3">
+            <Image
+              src="/safe-africa-logo.png"
+              alt=""
+              width={40}
+              height={40}
+              className="h-8 w-8 shrink-0 rounded-md sm:h-10 sm:w-10"
+            />
+            <div className="text-left leading-tight">
+              <p className="font-display text-sm font-bold sm:text-base">
+                SAFE <span className="text-brand-orange-deep">Africa</span>
+              </p>
+              <p className="hidden text-xs text-muted-foreground sm:block">
+                Generating Data-Driven Evidence
+                <br /> to Improve Livelihoods
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-6xl px-4 py-10 sm:py-12">
+          <div className="flex flex-wrap items-center justify-between gap-6 sm:gap-8">
+            <div className="flex flex-wrap gap-3">
               <Link
                 href={hero.primaryCta.href}
                 className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90"
@@ -81,7 +125,7 @@ export default async function HomePage() {
                 {hero.secondaryCta.label}
               </Link>
             </div>
-            <div className="mt-10 border-t pt-6">
+            <div>
               <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
                 Trusted by leading development partners
               </p>
@@ -92,29 +136,6 @@ export default async function HomePage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-
-          <div className="relative rise-in">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-xl">
-              <Image
-                src="/images/hero.jpg"
-                alt="Young maize crop rows growing in dark fertile soil"
-                fill
-                preload
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-sidebar/60 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 flex items-center gap-3 rounded-lg bg-background/95 px-4 py-3 shadow-md backdrop-blur">
-                <span className="evidence-bars" aria-hidden="true">
-                  <span /><span /><span /><span />
-                </span>
-                <div>
-                  <p className="font-mono text-sm font-semibold">3,800 households</p>
-                  <p className="text-xs text-muted-foreground">surveyed in one baseline</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
