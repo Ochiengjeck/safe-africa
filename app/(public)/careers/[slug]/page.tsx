@@ -5,7 +5,8 @@ import { formatDate } from "@/lib/format";
 import { Badge } from "@/components/ui/badge";
 import { RichTextContent } from "@/components/rich-text/content";
 import { ApplicationForm } from "./application-form";
-import { ArrowLeft } from "lucide-react";
+import { defaultApplicationFields, type FormField } from "@/lib/careers/form-fields";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export const revalidate = 600;
 
@@ -27,16 +28,22 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
 export default async function VacancyPage(props: { params: Promise<{ slug: string }> }) {
   const { slug } = await props.params;
-  const vacancy = await prisma.vacancy.findUnique({ where: { slug } });
-  if (!vacancy || vacancy.deletedAt) notFound();
+  const vacancy = await prisma.vacancy.findUnique({ where: { slug }, include: { form: true } });
+  // DRAFT vacancies are not public.
+  if (!vacancy || vacancy.deletedAt || vacancy.status === "DRAFT") notFound();
+
+  const fields = (vacancy.form?.fields as FormField[] | undefined) ?? defaultApplicationFields();
+  const requireCv = vacancy.form?.requireCv ?? true;
+  const resumeStrict = vacancy.resumeStrict || (vacancy.form?.resumeStrict ?? false);
+  const resumeTemplateUrl = vacancy.resumeTemplateUrl || vacancy.form?.resumeTemplateUrl;
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-16">
+    <main className="mx-auto max-w-4xl px-4 py-14 sm:py-16">
       <Link href="/careers" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
         <ArrowLeft className="h-4 w-4" /> All vacancies
       </Link>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <h1 className="font-display text-3xl font-bold">{vacancy.title}</h1>
+        <h1 className="font-display text-2xl font-bold sm:text-3xl">{vacancy.title}</h1>
         <Badge variant={vacancy.status === "OPEN" ? "default" : "outline"}>
           {vacancy.status === "OPEN" ? "Open" : "Closed"}
         </Badge>
@@ -51,12 +58,21 @@ export default async function VacancyPage(props: { params: Promise<{ slug: strin
       {vacancy.status === "OPEN" ? (
         <section className="mt-12 rounded-xl border bg-card p-6 shadow-sm sm:p-8">
           <h2 className="font-display text-xl font-semibold">Apply for this position</h2>
-          <ApplicationForm vacancyId={vacancy.id} />
+          <ApplicationForm
+            vacancyId={vacancy.id}
+            fields={fields}
+            requireCv={requireCv}
+            resumeStrict={resumeStrict}
+            resumeTemplateUrl={resumeTemplateUrl}
+          />
         </section>
       ) : (
-        <p className="mt-12 rounded-xl border border-dashed p-8 text-center text-muted-foreground">
-          This vacancy is closed and no longer accepting applications.
-        </p>
+        <div className="mt-12 rounded-xl border border-dashed p-8 text-center">
+          <p className="text-muted-foreground">This vacancy is closed and no longer accepting applications.</p>
+          <Link href="/careers/talent-pool" className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Join our talent pool to hear about future openings <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
       )}
     </main>
   );

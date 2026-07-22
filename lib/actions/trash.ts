@@ -17,7 +17,14 @@ export type TrashKind =
   | "post"
   | "galleryImage"
   | "teamMember"
-  | "contactMessage";
+  | "contactMessage"
+  | "applicationForm"
+  | "application"
+  | "interview"
+  | "talentPoolEntry";
+
+/** Careers/inbox kinds are managed by ADMIN+, not EDITOR. */
+const ADMIN_KINDS: TrashKind[] = ["contactMessage", "applicationForm", "application", "interview", "talentPoolEntry"];
 
 function delegateFor(kind: TrashKind) {
   switch (kind) {
@@ -35,11 +42,19 @@ function delegateFor(kind: TrashKind) {
       return prisma.teamMember;
     case "contactMessage":
       return prisma.contactMessage;
+    case "applicationForm":
+      return prisma.applicationForm;
+    case "application":
+      return prisma.application;
+    case "interview":
+      return prisma.interview;
+    case "talentPoolEntry":
+      return prisma.talentPoolEntry;
   }
 }
 
 export async function restoreItem(kind: TrashKind, id: string) {
-  await requireRole(kind === "contactMessage" ? "ADMIN" : "EDITOR");
+  await requireRole(ADMIN_KINDS.includes(kind) ? "ADMIN" : "EDITOR");
   // Delegates share the deletedAt shape; the union confuses the type system.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await (delegateFor(kind) as any).update({ where: { id }, data: { deletedAt: null } });

@@ -20,7 +20,7 @@ export function Section({
 }) {
   return (
     <section className={cn(VARIANTS[variant], className)}>
-      <div className={cn("mx-auto max-w-6xl px-4 py-20 sm:py-24", containerClassName)}>{children}</div>
+      <div className={cn("mx-auto max-w-6xl px-4 py-16 sm:py-20 lg:py-24", containerClassName)}>{children}</div>
     </section>
   );
 }

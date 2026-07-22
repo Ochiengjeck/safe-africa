@@ -57,16 +57,16 @@ export default async function HomePage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+      <section className="relative flex items-center overflow-hidden lg:min-h-[calc(100dvh-4rem)]">
+        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-12 sm:gap-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-16">
           <div className="rise-in">
             <p className="font-mono text-xs font-medium uppercase tracking-widest text-primary">
               Research · Evaluation · Advisory
             </p>
-            <h1 className="font-display mt-4 max-w-xl text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-6xl">
+            <h1 className="font-display mt-4 max-w-xl text-[2rem] font-extrabold leading-[1.1] sm:text-5xl sm:leading-[1.08] lg:text-6xl">
               {hero.title}
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-muted-foreground">{hero.subtitle}</p>
+            <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">{hero.subtitle}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href={hero.primaryCta.href}
@@ -157,16 +157,18 @@ export default async function HomePage() {
               <Reveal key={area.id} delay={i * 60}>
                 <Link
                   href={`/thematic-areas/${area.slug}`}
-                  className={`group flex items-center gap-5 border-b border-l-4 px-5 py-6 transition-colors first:border-t hover:bg-secondary/40 ${ROW_ACCENTS[i % ROW_ACCENTS.length]}`}
+                  className={`group flex items-center gap-4 border-b border-l-4 px-4 py-5 transition-colors first:border-t hover:bg-secondary/40 sm:gap-5 sm:px-5 sm:py-6 ${ROW_ACCENTS[i % ROW_ACCENTS.length]}`}
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary sm:h-11 sm:w-11">
                     <CmsIcon name={area.icon} className="h-5 w-5 text-primary" />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="font-display block text-lg font-semibold group-hover:text-primary">
+                    <span className="font-display block text-base font-semibold group-hover:text-primary sm:text-lg">
                       {area.title}
                     </span>
-                    <span className="mt-0.5 block truncate text-sm italic text-muted-foreground">{area.tagline}</span>
+                    <span className="mt-0.5 block text-sm italic text-muted-foreground line-clamp-2 sm:truncate">
+                      {area.tagline}
+                    </span>
                   </span>
                   <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" />
                 </Link>
@@ -295,7 +297,7 @@ export default async function HomePage() {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-sidebar/85" />
-        <div className="relative mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-4 py-20 text-sidebar-foreground">
+        <div className="relative mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-4 py-16 text-sidebar-foreground sm:py-20">
           <div className="max-w-xl">
             <h2 className="font-display text-3xl font-bold sm:text-4xl">{cta.title}</h2>
             {cta.body && <p className="mt-3 opacity-90">{cta.body}</p>}

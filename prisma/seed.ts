@@ -5,6 +5,11 @@ config();
 import { PrismaClient } from "../lib/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from "bcryptjs";
+import { defaultApplicationFields } from "../lib/careers/form-fields";
+
+const RESUME_TEMPLATE_URL =
+  "https://docs.google.com/document/d/1jVVfv_g-_DoUfLOKL1ol66UhkIXb42Cp8sBsYCbF4wA/edit";
+const STANDARD_FORM_ID = "tpl-standard-job";
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
@@ -280,8 +285,121 @@ const pageSections: { key: string; content: unknown }[] = [
   },
 ];
 
+async function seedCareers() {
+  // Reusable "Standard Job Application" template (fixed id → idempotent upsert).
+  await prisma.applicationForm.upsert({
+    where: { id: STANDARD_FORM_ID },
+    update: {
+      name: "Standard Job Application",
+      description: "Default application form used for survey field roles (enumerators, supervisors, etc.).",
+      fields: defaultApplicationFields() as object,
+      isTemplate: true,
+      requireCv: true,
+      resumeStrict: true,
+      resumeTemplateUrl: RESUME_TEMPLATE_URL,
+    },
+    create: {
+      id: STANDARD_FORM_ID,
+      name: "Standard Job Application",
+      description: "Default application form used for survey field roles (enumerators, supervisors, etc.).",
+      fields: defaultApplicationFields() as object,
+      isTemplate: true,
+      requireCv: true,
+      resumeStrict: true,
+      resumeTemplateUrl: RESUME_TEMPLATE_URL,
+    },
+  });
+
+  const enumeratorsDescription = `
+<h3>About the role</h3>
+<p>SAFE Africa is hiring data collection enumerators to support the Kenya Jobs, Agriculture and Digital Ecosystem (K-JADE) household baseline survey, implemented for the World Bank and IFPRI with support from the Bill &amp; Melinda Gates Foundation. Enumerators conduct household interviews using tablets across Makueni, Nakuru, Kirinyaga, and Busia counties.</p>
+<h3>Key deliverables</h3>
+<ul>
+<li>Attend and actively participate in all enumerator training, pretest, and recap sessions.</li>
+<li>Conduct household interviews using the SurveyCTO platform, following the interviewer's manual.</li>
+<li>Verify, accurately record, and submit completed interviews to the server on a daily basis.</li>
+<li>Address data-quality issues communicated by supervisors, survey managers, and the data manager.</li>
+<li>Take good care of all tablets and equipment and return them in good condition after the survey.</li>
+<li>Observe strict data confidentiality and adhere to the enumerator code of conduct.</li>
+</ul>
+<h3>Education, knowledge and experience</h3>
+<ul>
+<li>Recent graduate with a bachelor's degree in Agricultural Economics, Agribusiness Management, General Agriculture, or a related discipline.</li>
+<li>Minimum of Second Class Honours, Upper Division.</li>
+<li>Good understanding of research ethics, confidentiality, and privacy.</li>
+<li>Experience in rural household data collection; prior use of ODK, SurveyCTO, or Survey Solutions is highly preferred.</li>
+<li>Keen attention to detail, high integrity, punctuality, and demonstrated teamwork.</li>
+<li>Must be available full-time for the entire data collection exercise. Understanding of the local language is an added advantage.</li>
+</ul>
+<h3>Terms and conditions</h3>
+<p>Enumerators are engaged for approximately 9 weeks, including training, tool piloting, and data collection. They receive a training allowance and a per diem during data collection upon approval of daily deliverables, and are provided transport and airtime. Timesheets are required to record actual days worked.</p>
+<p><em>You will be required to attach your CV/resume in the specified format. CVs submitted in a different format will not be reviewed.</em></p>`.trim();
+
+  const supervisorsDescription = `
+<h3>About the role</h3>
+<p>SAFE Africa is hiring supervisors to serve as team leaders for data collection enumerators during the Kenya Jobs, Agriculture and Digital Ecosystem (K-JADE) household baseline survey, implemented for the World Bank and IFPRI. The survey is administered across Makueni, Nakuru, Kirinyaga, and Busia counties.</p>
+<h3>Duties and responsibilities</h3>
+<ul>
+<li>Attend and support enumerator training and facilitate piloting and recap sessions.</li>
+<li>Supervise household surveys for all assigned enumerators, coordinating with community contact persons and guiding replacement of missing households.</li>
+<li>Review data collected by your team to ensure quality before approving it for upload to the server, and ensure daily submission.</li>
+<li>Liaise with survey managers on community interviews and back-checking in selected households.</li>
+<li>Organize daily debriefing meetings, handle field expenses prudently, and account for their usage.</li>
+<li>Prepare and submit daily tallies, weekly reports, and a final report; enforce strict data confidentiality within your team.</li>
+</ul>
+<h3>Education, knowledge and experience</h3>
+<ul>
+<li>Minimum of a bachelor's degree with at least Second Class Honours, Upper Division, in Agricultural Economics, Agribusiness Management, General Agriculture, or a related discipline. A Master's degree is an added advantage.</li>
+<li>Past experience supervising data collection teams, or at least three years participating in large-scale rural household data collection in the agricultural sector.</li>
+<li>Familiarity with troubleshooting ODK platforms such as ODK, SurveyCTO, or Survey Solutions.</li>
+<li>Strong understanding of research ethics, confidentiality, and privacy; ability to provide technical guidance to enumerators.</li>
+<li>High integrity, punctuality, leadership, and the ability to work under pressure and meet strict deadlines.</li>
+<li>Must be available full-time for the entire data collection exercise.</li>
+</ul>
+<h3>Terms and conditions</h3>
+<p>Supervisors are engaged for approximately 9 weeks, including training, tool piloting, and data collection, with allowances and per diem as per SAFE Africa's field policy.</p>
+<p><em>You will be required to attach your CV/resume in the specified format. CVs submitted in a different format will not be reviewed.</em></p>`.trim();
+
+  const vacancies = [
+    {
+      slug: "kjade-baseline-enumerators",
+      title: "Call for Enumerators — K-JADE Baseline Survey",
+      type: "JOB" as const,
+      location: "Makueni, Nakuru, Kirinyaga & Busia Counties, Kenya",
+      summary:
+        "Conduct household interviews using tablets (SurveyCTO) for the K-JADE baseline survey across four counties. ~9-week engagement.",
+      deadline: new Date("2026-08-31T20:59:00.000Z"),
+      description: enumeratorsDescription,
+      status: "OPEN" as const,
+      formId: STANDARD_FORM_ID,
+      resumeStrict: true,
+      resumeTemplateUrl: RESUME_TEMPLATE_URL,
+    },
+    {
+      slug: "kjade-baseline-supervisors",
+      title: "Call for Supervisors — K-JADE Baseline Survey",
+      type: "JOB" as const,
+      location: "Makueni, Nakuru, Kirinyaga & Busia Counties, Kenya",
+      summary:
+        "Lead and provide technical assistance to enumerator teams during the K-JADE baseline survey. ~9-week engagement.",
+      deadline: new Date("2025-07-31T20:59:00.000Z"),
+      description: supervisorsDescription,
+      status: "CLOSED" as const,
+      formId: STANDARD_FORM_ID,
+      resumeStrict: true,
+      resumeTemplateUrl: RESUME_TEMPLATE_URL,
+    },
+  ];
+
+  for (const vacancy of vacancies) {
+    await prisma.vacancy.upsert({ where: { slug: vacancy.slug }, update: vacancy, create: vacancy });
+  }
+  console.log(`Careers: 1 template form, ${vacancies.length} vacancies`);
+}
+
 async function main() {
   await seedAdmin();
+  await seedCareers();
 
   for (const area of thematicAreas) {
     await prisma.thematicArea.upsert({ where: { slug: area.slug }, update: area, create: area });

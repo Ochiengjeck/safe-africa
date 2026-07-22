@@ -26,9 +26,10 @@ export default async function AdminDashboard() {
     prisma.resource.count({ where: live }),
     prisma.vacancy.count({ where: { status: "OPEN", ...live } }),
     prisma.contactMessage.count({ where: { read: false, ...live } }),
-    prisma.application.count({ where: { status: "NEW" } }),
+    prisma.application.count({ where: { status: "NEW", ...live } }),
     prisma.contactMessage.findMany({ where: live, orderBy: { createdAt: "desc" }, take: 5 }),
     prisma.application.findMany({
+      where: live,
       orderBy: { createdAt: "desc" },
       take: 5,
       include: { vacancy: { select: { title: true } } },

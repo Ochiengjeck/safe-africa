@@ -13,7 +13,6 @@ import {
   Newspaper,
   Users2,
   PanelsTopLeft,
-  Megaphone,
   Mail,
   Trash2,
   UserCog,
@@ -21,6 +20,11 @@ import {
   Menu,
   X,
   LogOut,
+  ClipboardList,
+  Megaphone,
+  Inbox,
+  CalendarClock,
+  UsersRound,
   type LucideIcon,
 } from "lucide-react";
 import { logout } from "@/lib/actions/auth";
@@ -50,11 +54,18 @@ const GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Inbox",
+    label: "Careers",
     items: [
-      { href: "/admin/careers", label: "Careers", icon: Megaphone, minRole: "ADMIN" },
-      { href: "/admin/messages", label: "Messages", icon: Mail, minRole: "ADMIN" },
+      { href: "/admin/careers/vacancies", label: "Vacancies", icon: Megaphone, minRole: "ADMIN" },
+      { href: "/admin/careers/forms", label: "Application Forms", icon: ClipboardList, minRole: "ADMIN" },
+      { href: "/admin/careers/applications", label: "Applications", icon: Inbox, minRole: "ADMIN" },
+      { href: "/admin/careers/interviews", label: "Interviews", icon: CalendarClock, minRole: "ADMIN" },
+      { href: "/admin/careers/talent-pool", label: "Talent Pool", icon: UsersRound, minRole: "ADMIN" },
     ],
+  },
+  {
+    label: "Inbox",
+    items: [{ href: "/admin/messages", label: "Messages", icon: Mail, minRole: "ADMIN" }],
   },
   {
     label: "System",

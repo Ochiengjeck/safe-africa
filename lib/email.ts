@@ -28,6 +28,29 @@ export async function sendNotification(subject: string, html: string) {
   }
 }
 
+/**
+ * Sends an email to an explicit recipient (applicants, candidates, talent-pool
+ * members). Mirrors sendNotification's graceful degradation: without
+ * RESEND_API_KEY it logs instead of throwing, and delivery failures never break
+ * the calling action.
+ */
+export async function sendMail(to: string, subject: string, html: string) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!to) return;
+
+  if (!apiKey) {
+    console.log(`[email disabled] To: ${to} — ${subject}\n${html}`);
+    return;
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    await resend.emails.send({ from: FROM, to, subject, html });
+  } catch (error) {
+    console.error("Failed to send email:", error);
+  }
+}
+
 export function escapeHtml(value: string) {
   return value
     .replaceAll("&", "&amp;")

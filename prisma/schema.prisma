@@ -33,6 +33,7 @@ enum VacancyType {
 }
 
 enum VacancyStatus {
+  DRAFT
   OPEN
   CLOSED
 }
@@ -42,6 +43,33 @@ enum ApplicationStatus {
   REVIEWED
   SHORTLISTED
   REJECTED
+}
+
+enum InterviewMode {
+  VIDEO
+  PHONE
+  IN_PERSON
+}
+
+enum InterviewStatus {
+  SCHEDULED
+  COMPLETED
+  PASSED
+  FAILED
+  CANCELLED
+}
+
+enum OfferStatus {
+  NONE
+  SENT
+  ACCEPTED
+  DECLINED
+}
+
+enum TalentStatus {
+  ACTIVE
+  INVITED
+  ARCHIVED
 }
 
 enum PostType {
@@ -145,33 +173,110 @@ model Resource {
   deletedAt DateTime?
 }
 
+model ApplicationForm {
+  id                String    @id @default(cuid())
+  name              String
+  description       String?
+  fields            Json      // FormField[] — see lib/careers/form-fields.ts
+  isTemplate        Boolean   @default(false)
+  requireCv         Boolean   @default(true)
+  resumeStrict      Boolean   @default(false)
+  resumeTemplateUrl String?
+  vacancies         Vacancy[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+}
+
 model Vacancy {
-  id           String        @id @default(cuid())
-  slug         String        @unique
-  title        String
-  type         VacancyType   @default(JOB)
-  location     String
-  deadline     DateTime?
-  description  String
-  status       VacancyStatus @default(OPEN)
-  applications Application[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  deletedAt DateTime?
+  id                 String           @id @default(cuid())
+  slug               String           @unique
+  title              String
+  type               VacancyType      @default(JOB)
+  location           String
+  summary            String?
+  deadline           DateTime?
+  description        String
+  status             VacancyStatus    @default(DRAFT)
+  form               ApplicationForm? @relation(fields: [formId], references: [id], onDelete: SetNull)
+  formId             String?
+  resumeStrict       Boolean          @default(false)
+  resumeTemplateUrl  String?
+  notifiedTalentPool Boolean          @default(false)
+  applications       Application[]
+  interviews         Interview[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  deletedAt          DateTime?
 }
 
 model Application {
-  id          String            @id @default(cuid())
-  vacancy     Vacancy           @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
-  vacancyId   String
-  name        String
-  email       String
-  phone       String
-  coverLetter String
-  cvUrl       String?
-  status      ApplicationStatus @default(NEW)
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  id               String              @id @default(cuid())
+  vacancy          Vacancy             @relation(fields: [vacancyId], references: [id], onDelete: Cascade)
+  vacancyId        String
+  name             String
+  email            String
+  phone            String
+  coverLetter      String?
+  answers          Json?
+  cvUrl            String?
+  status           ApplicationStatus   @default(NEW)
+  notifiedStatuses ApplicationStatus[] @default([])
+  interviews       Interview[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  deletedAt        DateTime?
+
+  @@unique([vacancyId, email])
+  @@index([vacancyId, status])
+}
+
+model Interview {
+  id                String           @id @default(cuid())
+  application       Application?     @relation(fields: [applicationId], references: [id], onDelete: SetNull)
+  applicationId     String?
+  talentPool        TalentPoolEntry? @relation(fields: [talentPoolId], references: [id], onDelete: SetNull)
+  talentPoolId      String?
+  vacancy           Vacancy?         @relation(fields: [vacancyId], references: [id], onDelete: SetNull)
+  vacancyId         String?
+  positionTitle     String
+  candidateName     String
+  candidateEmail    String
+  scheduledAt       DateTime
+  mode              InterviewMode    @default(VIDEO)
+  locationOrLink    String?
+  notes             String?
+  status            InterviewStatus  @default(SCHEDULED)
+  offerStatus       OfferStatus      @default(NONE)
+  offerSentAt       DateTime?
+  offerNotes        String?
+  notifiedScheduled Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  deletedAt         DateTime?
+
+  @@index([status])
+}
+
+model TalentPoolEntry {
+  id                String       @id @default(cuid())
+  fullName          String
+  email             String       @unique
+  phone             String
+  professionalTitle String
+  specializations   String[]     @default([])
+  location          String?
+  nationality       String?
+  data              Json         // full structured CV — see talentPoolSchema
+  consent           Boolean      @default(false)
+  retention         String?
+  status            TalentStatus @default(ACTIVE)
+  interviews        Interview[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  deletedAt         DateTime?
+
+  @@index([status])
 }
 
 model Post {
