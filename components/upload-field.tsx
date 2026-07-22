@@ -53,6 +53,10 @@ export function UploadField({ name, folder, label, accept, defaultUrl, required 
       body.append("timestamp", String(sign.timestamp));
       body.append("signature", sign.signature);
       body.append("folder", sign.folder);
+      // NOTE: Cloudinary blocks delivery of PDF/ZIP files by default (returns
+      // 401), for BOTH image and raw resource types. To make CV links work,
+      // enable "Allow delivery of PDF and ZIP files" in the Cloudinary console
+      // (Settings → Security). This is an account setting, not a code toggle.
       const uploadResponse = await fetch(
         `https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`,
         { method: "POST", body }
